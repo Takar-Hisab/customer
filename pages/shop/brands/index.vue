@@ -1,19 +1,22 @@
 <script setup lang="ts">
     // Columns
   const columns = [{
-    key: 'logo',
-    label: 'Logo',
-    sortable: true
-  }, {
     key: 'name',
     label: 'Name',
     sortable: true
-  }
+  },
+    {
+      key:'lastUpdate',
+      label: 'Last Update',
+      sortable: true,
+    }
   , {
     key: 'action',
     label: 'Action',
     sortable: true
   }]
+
+  const isOpen = ref(false);
 
 
 
@@ -71,13 +74,13 @@ const pageTotal = ref(200) // This value should be dynamic coming from the API
 const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1)
 const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.value))
 
-
-const { data: brands, pending, refresh } = await useLazyAsyncData(
-    'brands', () => ($fetch as any)(`/brands`, {
-      baseURL: useRuntimeConfig().public?.baseUrl,
-      credentials: 'include'
-}));
-
+  //get Brands
+    const { data: brands, error, pending, refresh } = useLazyAsyncData(
+        'brands',
+        () => $fetch( `/brand`, {
+          method: 'GET',
+          baseURL: useRuntimeConfig().public.baseUrl,
+        }));
     onMounted(() => {
       refresh()
       console.log(brands);
@@ -109,7 +112,19 @@ const { data: brands, pending, refresh } = await useLazyAsyncData(
     >
 
           <template #header>
-            <Heading>Product Brands</Heading>
+            <div class="flex items-center justify-between">
+              <Heading>Product Brands</Heading>
+              <UButton
+                  class="hidden lg:flex"
+                  icon="i-heroicons-pencil-square"
+                  size="sm"
+                  color="primary"
+                  variant="solid"
+                  label="Add New"
+                  :trailing="false"
+                  @click="isOpen = true"
+              />
+            </div>
           </template>
           
 
@@ -173,9 +188,7 @@ const { data: brands, pending, refresh } = await useLazyAsyncData(
             <template #completed-data="{ row }">
                 <UBadge size="xs" :label="row.completed ? 'Completed' : 'In Progress'" :color="row.completed ? 'emerald' : 'orange'" variant="subtle" />
             </template>
-            <template #logo-data="{ row }">
-                <img :src="row?.logo" class="w-24 h-auto rounded" alt="">
-            </template>
+
 
             <template #action-data="{ row }">
                 <div class="flex items-center gap-3">
@@ -232,4 +245,41 @@ const { data: brands, pending, refresh } = await useLazyAsyncData(
         </div>
     </div>
     <!-- Brand End -->
+
+
+  <USlideover v-model="isOpen" >
+    <UCard class="flex flex-col flex-1" :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+      <template #header>
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+            Add New Brand
+          </h3>
+          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="isOpen = false" />
+        </div>
+      </template>
+
+      <UForm>
+        <UFormGroup label="Name" class="mb-5">
+          <UInput placeholder="Brand Name" color="primary" size="lg"  />
+        </UFormGroup>
+        <UFormGroup label="Logo" class="mb-5">
+          <UInput type="file" size="lg" icon="i-heroicons-folder" color="primary" />
+        </UFormGroup>
+        <div class="flex items-center gap-3 mt-5">
+          <UButton
+              size="lg"
+              color="primary"
+              variant="solid"
+              label="Save"
+          />
+          <UButton
+              size="lg"
+              color="primary"
+              variant="outline"
+              label="Cancel"
+          />
+        </div>
+      </UForm>
+    </UCard>
+  </USlideover>
 </template>

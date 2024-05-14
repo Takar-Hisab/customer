@@ -99,7 +99,7 @@ const selected = ref([])
       <UBreadcrumb :links="links" />
     </div>
     <!-- Widgets -->
-    <div class="p-2 lg:p-4 rounded-lg lg:rounded-2xl shadow-lg flex flex-wrap items-center bg-primary lg:bg-white w-full overflow-y-scroll">
+    <div class="p-2 lg:p-4 rounded-lg lg:rounded-2xl  flex flex-wrap items-center bg-primary lg:bg-white w-full overflow-y-scroll">
       <div class="w-1/2 lg:w-1/4 px-2 lg:pl-0 mb-2 lg:mb-0">
         <div class="bg-gray-200 rounded-2xl p-2 lg:p-5">
           <div class="flex items-center gap-3">

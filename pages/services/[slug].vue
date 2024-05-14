@@ -71,6 +71,7 @@
           variant="solid"
           label="Add Package"
           :trailing="false"
+          @click="isOpen = true"
       />
     </div>
   </div>
@@ -96,7 +97,12 @@
           <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
             Add New Package
           </h3>
-          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="isOpen = false" />
+          <UButton
+              color="gray"
+              variant="ghost"
+              icon="i-heroicons-x-mark-20-solid"
+              class="-my-1"
+              @click="isOpen = false" />
         </div>
       </template>
 
@@ -105,13 +111,13 @@
           <UInput placeholder="Package Name" color="primary" size="lg" v-model="state.name"  />
         </UFormGroup>
         <UFormGroup label="Price" class="mb-5">
-          <UInput placeholder="Package Name" color="primary" size="lg" v-model="state.price"  />
+          <UInput placeholder="Package Price" color="primary" size="lg" v-model="state.price"  />
         </UFormGroup>
-        <UFormGroup label="Position">
+        <UFormGroup label="Position" class="mb-5">
           <UInput placeholder="Package Position" color="primary" size="lg" v-model="state.position" />
         </UFormGroup>
         <UFormGroup label="Description">
-          <UTextarea color="primary" variant="outline" :row="5" placeholder="Package Description" />
+          <UTextarea color="primary" variant="outline" :rows="8" placeholder="Package Description" />
         </UFormGroup>
         <div class="flex items-center gap-3 mt-5">
           <UButton

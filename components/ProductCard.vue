@@ -14,7 +14,7 @@
             </div>
             <div class="p-2">
                 <h4 class="leading-tight mb-2">
-                    <NuxtLink :to="`/${data?.slug}`" class="text-sm lg:text-lg leading-tight hover:text-primary">{{data?.name?.substring(0, 40)}}</NuxtLink>
+                    <NuxtLink :to="`/${data?.sku}`" class="text-sm lg:text-lg leading-tight hover:text-primary">{{data?.name?.substring(0, 40)}}</NuxtLink>
                 </h4>
                 <div class="flex items-center justify-between mb-2">
                   <p class="flex items-center gap-1">
@@ -35,6 +35,7 @@
                         color="primary"
                         square
                         variant="soft"
+                        :to="`/shop/products/update/${data?.sku}`"
                     />
                     <UButton
                         icon="i-heroicons-trash"

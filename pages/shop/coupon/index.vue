@@ -136,7 +136,7 @@ const { data: todos, pending } = await useLazyAsyncData<{
         </div>
 
         <!-- Header and Action buttons -->
-        <div class="flex flex-col lg:flex-wrap justify-between items-center w-full px-4 py-3">
+        <div class="flex flex-col lg:flex-row justify-between items-center w-full px-4 py-3">
         <div class="flex items-center gap-1.5 mb-4">
             <span class="text-sm leading-5">Rows per page:</span>
 

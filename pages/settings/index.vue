@@ -26,8 +26,8 @@
         <div class="bg-white shadow-lg rounded-2xl p-5">
           <Heading class="mb-5">General</Heading>
           <!-- Logo -->
-          <div class="flex flex-wrap lg:-mx-3">
-            <div class="w-full lg:-1/3  lg:px-2 mb-4 lg:mb-0">
+          <div class="flex flex-row lg:-mx-3">
+            <div class="w-full lg:w-1/3  lg:px-2 mb-4 lg:mb-0">
               <div class="p-3 border rounded-xl">
                 <Heading>Logo Light</Heading>
                 <div class="border border-dashed border-primary-500 rounded-2xl  my-4  h-40 my-4 flex items-center justify-center">
@@ -43,7 +43,7 @@
                 </div>
               </div>
             </div>
-            <div class="w-full lg:-1/3  lg:px-2 mb-4 lg:mb-0">
+            <div class="w-full lg:w-1/3  lg:px-2 mb-4 lg:mb-0">
               <div class="p-3 border rounded-xl">
                 <Heading>Logo Dark</Heading>
                 <div class="border border-dashed border-primary-500 rounded-2xl my-4 h-40 my-4 flex items-center justify-center">
@@ -59,7 +59,7 @@
                 </div>
               </div>
             </div>
-            <div class="w-full lg:-1/3  lg:px-2 mb-4 lg:mb-0">
+            <div class="w-full lg:w-1/3  lg:px-2 mb-4 lg:mb-0">
               <div class="p-3 border rounded-xl">
                 <Heading>Fav Icon</Heading>
                 <div class="border border-dashed border-primary-500 rounded-2xl h-40 my-4 flex items-center justify-center">
@@ -118,8 +118,8 @@
         <div class="bg-white shadow-lg rounded-2xl p-5">
           <Heading class="mb-5">Store</Heading>
           <!-- Logo -->
-          <div class="flex flex-wrap lg:-mx-3">
-            <div class="w-full lg;w-1/3  lg:px-2">
+          <div class="flex flex-row lg:-mx-3">
+            <div class="w-full lg:w-1/3  lg:px-2">
               <div class="p-3 border rounded-xl">
                 <Heading>Store Logo</Heading>
                 <div class="border border-dashed border-primary-500 rounded-2xl  my-4  h-40 my-4 flex items-center justify-center">
@@ -135,7 +135,7 @@
                 </div>
               </div>
             </div>
-            <div class="w-full lg;w-1/3  lg:px-2">
+            <div class="w-full lg:w-1/3  lg:px-2">
               <div class="p-3 border rounded-xl">
                 <Heading>Invoice Logo</Heading>
                 <div class="border border-dashed border-primary-500 rounded-2xl h-40 my-4 flex items-center justify-center">

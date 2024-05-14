@@ -8,15 +8,20 @@ const columns = [{
   sortable: true
 },
   {
+    key: 'parentCategory',
+    label: 'Parent Category',
+    sortable: true
+  },
+  {
     key: 'updated_at',
     label: 'Last Updated',
     sortable: true
   }
-, {
-  key: 'action',
-  label: 'Action',
-  sortable: true
-}]
+  , {
+    key: 'action',
+    label: 'Action',
+    sortable: true
+  }]
 
 const selectedColumns = ref(columns)
 const columnsTable = computed(() => columns.filter((column) => selectedColumns.value.includes(column)))
@@ -97,20 +102,20 @@ onMounted(() => {
 })
 </script>
 <template>
-    <!-- BreadCrumb -->
-      <Breadcrumb page="Product Categories" icon="i-heroicons-list-bullet" />
-    <!-- BreadCrumb End -->
+  <!-- BreadCrumb -->
+  <Breadcrumb page="Product Categories" icon="i-heroicons-list-bullet" />
+  <!-- BreadCrumb End -->
 
-    <!--  Back Button  -->
-    <BackButton />
-    <!--  Back Button End  -->
+  <!--  Back Button  -->
+  <BackButton />
+  <!--  Back Button End  -->
 
-    <!-- Categories -->
-    <div>
-        <div class="p-4 bg-white rounded-xl shadow-lg">
-        <UCard
-        class="w-full"
-        :ui="{
+  <!-- Categories -->
+  <div>
+    <div class="p-4 bg-white rounded-xl shadow-lg">
+      <UCard
+          class="w-full"
+          :ui="{
         base: '',
         ring: '',
         divide: 'divide-y divide-gray-200 dark:divide-gray-700',
@@ -118,10 +123,10 @@ onMounted(() => {
         body: { padding: '', base: 'divide-y divide-gray-200 dark:divide-gray-700' },
         footer: { padding: 'p-4' }
         }"
-    >
+      >
         <template #header>
           <div class="flex items-center justify-between">
-            <Heading>Product Categories</Heading>
+            <Heading>Sub Categories</Heading>
             <UButton
                 class="hidden lg:flex"
                 icon="i-heroicons-pencil-square"
@@ -137,93 +142,93 @@ onMounted(() => {
 
         <!-- Filters -->
         <div class="flex items-center justify-between gap-3 px-4 py-3">
-        <UInput v-model="search" icon="i-heroicons-magnifying-glass-20-solid" placeholder="Search..." />
+          <UInput v-model="search" icon="i-heroicons-magnifying-glass-20-solid" placeholder="Search..." />
         </div>
 
         <!-- Header and Action buttons -->
         <div class="flex flex-col lg:flex-row justify-between items-center w-full px-4 py-3">
-        <div class="flex items-center gap-1.5 mb-4">
+          <div class="flex items-center gap-1.5 mb-4">
             <span class="text-sm leading-5">Rows per page:</span>
 
             <USelect
-            v-model="pageCount"
-            :options="[3, 5, 10, 20, 30, 40]"
-            class="me-2 w-20"
-            size="xs"
-            />
-        </div>
-
-        <div class="flex gap-1.5 items-center">
-            <USelectMenu v-model="selectedColumns" :options="columns" multiple>
-            <UButton
-                icon="i-heroicons-view-columns"
-                color="gray"
+                v-model="pageCount"
+                :options="[3, 5, 10, 20, 30, 40]"
+                class="me-2 w-20"
                 size="xs"
-            >
+            />
+          </div>
+
+          <div class="flex gap-1.5 items-center">
+            <USelectMenu v-model="selectedColumns" :options="columns" multiple>
+              <UButton
+                  icon="i-heroicons-view-columns"
+                  color="gray"
+                  size="xs"
+              >
                 Columns
-            </UButton>
+              </UButton>
             </USelectMenu>
 
             <UButton
-            icon="i-heroicons-funnel"
-            color="gray"
-            size="xs"
-            :disabled="search === '' && selectedStatus.length === 0"
-            @click="resetFilters"
+                icon="i-heroicons-funnel"
+                color="gray"
+                size="xs"
+                :disabled="search === '' && selectedStatus.length === 0"
+                @click="resetFilters"
             >
-            Reset
+              Reset
             </UButton>
-        </div>
+          </div>
         </div>
 
         <!-- Table -->
         <UTable
-        v-model="selectedRows"
-        v-model:sort="sort"
-        :rows="categories?.data"
-        :columns="columnsTable"
-        :loading="pending"
-        sort-asc-icon="i-heroicons-arrow-up-20-solid"
-        sort-desc-icon="i-heroicons-arrow-down-20-solid"
-        :sort-button="{ icon: 'i-heroicons-sparkles-20-solid', color: 'primary', variant: 'outline', size: '2xs', square: false, ui: { rounded: 'rounded-full' } }"
-        sort-mode="manual"
-        class="w-full"
-        :ui="{ td: { base: 'max-w-[0] truncate' }, default: { checkbox: { color: 'gray' } } }"
-        @select="select"
+            v-model="selectedRows"
+            v-model:sort="sort"
+            :rows="categories?.data"
+            :columns="columnsTable"
+            :loading="pending"
+            sort-asc-icon="i-heroicons-arrow-up-20-solid"
+            sort-desc-icon="i-heroicons-arrow-down-20-solid"
+            :sort-button="{ icon: 'i-heroicons-sparkles-20-solid', color: 'primary', variant: 'outline', size: '2xs', square: false, ui: { rounded: 'rounded-full' } }"
+            sort-mode="manual"
+            class="w-full"
+            :ui="{ td: { base: 'max-w-[0] truncate' }, default: { checkbox: { color: 'gray' } } }"
+            @select="select"
         >
-        <template #completed-data="{ row }">
+          <template #completed-data="{ row }">
             <UBadge size="xs" :label="row.completed ? 'Completed' : 'In Progress'" :color="row.completed ? 'emerald' : 'orange'" variant="subtle" />
-        </template>
-        <template #icon-data="{ row }">
+          </template>
+          <template #icon-data="{ row }">
             <img :src="row?.icon" class="w-20 h-auto rounded" alt="">
-        </template>
-        <template #banner-data="{ row }">
-          <img :src="row?.banner" class="w-24 h-auto rounded" alt="">
-        </template>
+          </template>
+          <template #banner-data="{ row }">
+            <img :src="row?.banner" class="w-24 h-auto rounded" alt="">
+          </template>
 
-        <template #action-data="{ row }">
+          <template #action-data="{ row }">
             <div class="flex items-center gap-3">
-                <UButton
-                    icon="i-heroicons-pencil-square"
-                    size="sm"
-                    color="primary"
-                    square
-                    variant="soft"
-                />
-                <UButton
-                    icon="i-heroicons-trash"
-                    size="sm"
-                    color="primary"
-                    square
-                    variant="soft"
-                />
+              <UButton
+                  icon="i-heroicons-pencil-square"
+                  size="sm"
+                  color="primary"
+                  square
+                  variant="soft"
+              />
+              <UButton
+                  icon="i-heroicons-trash"
+                  size="sm"
+                  color="primary"
+                  square
+                  variant="soft"
+              />
             </div>
-        </template>
+          </template>
         </UTable>
 
         <!-- Number of rows & Pagination -->
         <template #footer>
-        <div class="flex flex-wrap justify-between items-center">
+          <div class="flex flex-wrap justify-between items-center">
             <div>
             <span class="text-sm leading-5">
                 Showing
@@ -237,10 +242,10 @@ onMounted(() => {
             </div>
 
             <UPagination
-            v-model="page"
-            :page-count="pageCount"
-            :total="pageTotal"
-            :ui="{
+                v-model="page"
+                :page-count="pageCount"
+                :total="pageTotal"
+                :ui="{
                 wrapper: 'flex items-center gap-1',
                 rounded: '!rounded-full min-w-[32px] justify-center',
                 default: {
@@ -250,12 +255,12 @@ onMounted(() => {
                 }
             }"
             />
-        </div>
+          </div>
         </template>
-    </UCard>
-        </div>
+      </UCard>
     </div>
-    <!-- Categories End -->
+  </div>
+  <!-- Categories End -->
 
   <USlideover v-model="isOpen" >
     <UCard class="flex flex-col flex-1" :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">

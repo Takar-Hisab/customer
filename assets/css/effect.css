@@ -22,7 +22,7 @@
 }
 
 .shop-links {
-    margin-top: -300px;
+    margin-top: -360px;
     transition: all ease-in-out 0.3s;
     opacity: 0;
     &--active {

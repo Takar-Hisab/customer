@@ -56,15 +56,21 @@
           <div class="overflow-hidden">
             <ul class="shop-links flex flex-col gap-9 pl-8 py-4" :class="{'shop-links--active' : isShopLinks}">
               <li>
-                <NuxtLink to="/shop/products" class="flex items-center gap-3">
+                <NuxtLink to="/shop/products" class="flex items-center gap-3 ">
                   <Icon name="system-uicons:boxes" size="20" class="text-primary" />
                   <span class="sub-link hover:text-primary">Products</span>
                 </NuxtLink>
               </li>
               <li>
-                <NuxtLink to="/shop/categories"  class="flex items-center gap-3">
+                <NuxtLink to="/shop/categories"  class="flex items-center gap-3 relative before:absolute before:w-[1px] before:h-8 before:bg-primary before:top-[26px] before:left-2 ">
                   <Icon name="material-symbols:category-outline-rounded" size="20" class="text-primary" />
                   <span class="sub-link hover:text-primary">Product Category</span>
+                </NuxtLink>
+              </li>
+              <li>
+                <NuxtLink to="/shop/categories/subcategory"  class="flex items-center gap-3">
+                  <Icon name="material-symbols:category-outline-rounded" size="20" class="text-primary" />
+                  <span class="sub-link hover:text-primary">Sub Category</span>
                 </NuxtLink>
               </li>
               <li>

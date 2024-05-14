@@ -9,17 +9,21 @@ const items = [
     slot: 'account',
     disabled: true
   }], [{
-    label: 'Settings',
-    icon: 'i-heroicons-cog-8-tooth'
+    label: 'Profile',
+    icon: 'i-heroicons-user-circle',
+    to:'/dashboard/profile'
   }], [{
     label: 'Products',
-    icon: 'i-heroicons-book-open'
+    icon: 'i-heroicons-archive-box',
+    to: '/shop/products',
   }, {
     label: 'Order',
-    icon: 'i-heroicons-megaphone'
+    icon: 'i-heroicons-shopping-cart',
+    to: '/order'
   }, {
     label: 'Customers',
-    icon: 'i-heroicons-signal'
+    icon: 'i-heroicons-users',
+    to:'/customers'
   }], [{
     label: 'Sign out',
     icon: 'i-heroicons-arrow-left-on-rectangle'
@@ -40,9 +44,10 @@ const notifications = [
       <Icon  name="i-heroicons-calendar-days" />
       <span>{{ format(date, 'd MMM, yyy') }}</span>
     </div>
-    <div class="bg-white shadow-lg  rounded-full flex items-center justify-center px-3 py-2 shadow-gray-200 gap-2 w-12 h-12 border border-primary">
-      <UDropdown :items="notifications" :ui="{ item: { disabled: 'cursor-text select-text' } }" :popper="{ placement: 'bottom-start' }">
-       <UIcon name="i-heroicons-bell" size="30" />
+    <UDropdown :items="notifications" :ui="{ item: { disabled: 'cursor-text select-text' }, width:'w-80', height:'min-h-96',padding:'p-3', ring:'ring-primary', shadow:'shadow-primary-500/10'  }" :popper="{offsetDistance: 16, placement: 'bottom-start' }">
+       <div class="bg-white shadow-lg  rounded-full flex items-center justify-center px-3 py-2 shadow-gray-200 gap-2 w-12 h-12 border border-primary">
+         <UIcon name="i-heroicons-bell" class="text-xl" />
+       </div>
 
         <template #item="{ item }">
           <div class="flex gap-3">
@@ -56,11 +61,9 @@ const notifications = [
           </div>
         </template>
       </UDropdown>
-    </div>
-    <div class="bg-white shadow-lg  rounded-full flex items-center justify-center p-1 shadow-gray-200">
-      <UDropdown
+    <UDropdown
           :items="items"
-          :ui="{ item: { disabled: 'cursor-text select-text' } }"
+          :ui="{ item: { disabled: 'cursor-text select-text' }, width:'w-60', ring:'ring-primary' }"
           :popper="{ placement: 'bottom-start' }"
       >
         <UAvatar
@@ -88,7 +91,6 @@ const notifications = [
           <UIcon :name="item.icon" class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto" />
         </template>
       </UDropdown>
-    </div>
   </div>
 </template>
 

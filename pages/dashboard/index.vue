@@ -1,17 +1,14 @@
 <script setup lang="ts">
 
-definePageMeta({
-  middleware:['auth']
-});
 
   const links = [{
-  label: 'Takar Hisab',
-  icon: 'i-heroicons-home',
-  to: '/'
-}, {
-  label: 'Dashboard',
-  icon: 'i-heroicons-link'
-}]
+      label: 'Takar Hisab',
+      icon: 'i-heroicons-home',
+      to: '/'
+    }, {
+      label: 'Dashboard',
+      icon: 'i-heroicons-link'
+    }]
 
 
 const columns = [

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-
+const isOpen = ref(false);
 // Columns
 const columns = [{
   key: 'icon',
@@ -89,19 +89,19 @@ const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1)
 const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.value))
 
 // Data
-const { data: categories, pending, refresh } = await useLazyAsyncData(
-    'categories', () => ($fetch as any)(`/categories`, {
-      baseURL: useRuntimeConfig().public?.baseUrl,
-      credentials: 'include',
-}), {
-  default: () => [],
-  watch: [page, search, searchStatus, pageCount, sort]
-})
+// const { data: categories, pending, refresh } = await useLazyAsyncData(
+//     'categories', () => ($fetch as any)(`/categories`, {
+//       baseURL: useRuntimeConfig().public?.baseUrl,
+//       credentials: 'include',
+// }), {
+//   default: () => [],
+//   watch: [page, search, searchStatus, pageCount, sort]
+// })
 
-onMounted(() => {
-  refresh()
-  console.log(categories);
-})
+// onMounted(() => {
+//   refresh()
+//   console.log(categories);
+// })
 </script>
 <template>
     <!-- BreadCrumb -->
@@ -127,7 +127,19 @@ onMounted(() => {
         }"
     >
         <template #header>
-          <Heading>Product Categories</Heading>
+          <div class="flex items-center justify-between">
+            <Heading>Product Categories</Heading>
+            <UButton
+                class="hidden lg:flex"
+                icon="i-heroicons-pencil-square"
+                size="sm"
+                color="primary"
+                variant="solid"
+                label="Add New"
+                :trailing="false"
+                @click="isOpen = true"
+            />
+          </div>
         </template>
 
         <!-- Filters -->
@@ -251,4 +263,46 @@ onMounted(() => {
         </div>
     </div>
     <!-- Categories End -->
+
+  <USlideover v-model="isOpen" >
+    <UCard class="flex flex-col flex-1" :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+      <template #header>
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+            Add New Service
+          </h3>
+          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="isOpen = false" />
+        </div>
+      </template>
+
+      <UForm>
+        <UFormGroup label="Name" class="mb-5">
+          <UInput placeholder="Category Name" color="primary" size="lg"  />
+        </UFormGroup>
+        <UFormGroup label="Icon" class="mb-5">
+          <UInput placeholder="Category Icon" color="primary" size="lg" />
+        </UFormGroup>
+        <UFormGroup label="Banner" class="mb-5">
+          <UInput placeholder="Category Banner" color="primary" size="lg" />
+        </UFormGroup>
+        <UFormGroup label="Description">
+          <UTextarea :rows="5" placeholder="Category Description" color="primary" />
+        </UFormGroup>
+        <div class="flex items-center gap-3 mt-5">
+          <UButton
+              size="lg"
+              color="primary"
+              variant="solid"
+              label="Save"
+          />
+          <UButton
+              size="lg"
+              color="primary"
+              variant="outline"
+              label="Cancel"
+          />
+        </div>
+      </UForm>
+    </UCard>
+  </USlideover>
 </template>

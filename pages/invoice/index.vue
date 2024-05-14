@@ -180,7 +180,7 @@ const isInvoicePreview = () => {
         <div class="flex items-center justify-between">
           <Heading>Invoice</Heading>
           <UButton
-            class="hidden lg:block"
+            class="hidden lg:flex"
             icon="i-heroicons-pencil-square"
             size="sm"
             color="primary"

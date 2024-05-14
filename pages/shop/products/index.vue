@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-
+  const toast = useToast();
   const isScrolled = ref(false);
   const isFilter = ref(false);
 
@@ -25,18 +25,47 @@
       brand:null
     })
 
+    // Create Product
+    const state = reactive({
+      sku:null,
+      price:null,
+    });
 
-    const { data: products, error, pending } = useLazyAsyncData(
+  const onSubmit = async () => {
+    await execute();
+
+    if(data.value){
+      toast.add({ title: "Data Save Successfully Done..." })
+    }
+    if(error.value){
+      toast.add({ title:error.value.data.message, color:"red" })
+    }
+    const isProductCreate = false;
+  };
+  const {data, status, execute} = useAsyncData(
+      async () => {
+        return await $fetch(`/product`, {
+          baseURL: useRuntimeConfig().public?.baseUrl,
+          method: "POST",
+          body:state,
+        });
+      },
+      {
+        immediate: false,
+      }
+  );
+
+  //Get Products
+    const { data: products, error, pending, refresh } = useLazyAsyncData(
       'products',
-      () => $fetch( `customer/product`, {
+      () => $fetch( `/product`, {
         method: 'GET',
         baseURL: useRuntimeConfig().public.baseUrl,
-        headers:{
-          authorization: `Bearer ${useTokenStore().token}`
-        }
       }));
+      onMounted(() => {
+        refresh()
+      })
 
-      console.log(products);
 </script>
 <template>
   <div>
@@ -178,18 +207,17 @@
         </template>
 
         <div>
-          <UForm  class="space-y-4" >
+          <UForm  class="space-y-4" :state="state" @submit="onSubmit">
             <UFormGroup label="Price" name="price">
-              <UInput size="md" color="primary" />
+              <UInput size="md" color="primary" v-model="state.price" />
             </UFormGroup>
 
             <UFormGroup label="Product SKU" name="sku">
-              <UInput size="md" color="primary" />
+              <UInput size="md" color="primary" v-model="state.sku"  />
             </UFormGroup>
 
             <div class="flex items-center gap-3">
               <UButton type="submit">Save</UButton>
-              <UButton >Add Detail</UButton>
             </div>
           </UForm>
         </div>

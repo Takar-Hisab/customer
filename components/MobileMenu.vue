@@ -29,15 +29,15 @@ const isMainMenu = ref(false);
 <template>
 
 <!-- Menu Links -->
-    <div  class="transition-all ease-in-out  fixed  w-full h-screen top-0 left-0 right-0 bottom-0  bg-primary z-30 flex items-center justify-center" :class="{'translate-x-0 duration-700': isMainMenu, 'duration-1000 -translate-x-96': !isMainMenu}">
+    <div  class="transition-all ease-in-out  fixed  w-full h-screen top-0 left-0 right-0 bottom-0  bg-primary z-30 flex items-center justify-center" :class="{'translate-x-0 duration-700': isMainMenu, 'duration-1000 -translate-x-[440px]': !isMainMenu}">
     </div>
-    <div  class="transition-all ease-in-out fixed  w-full h-screen top-0 left-0 right-0 bottom-0  bg-primary overflow-y-scroll z-40" :class="{'translate-x-0 duration-1000': isMainMenu, 'translate-x-96 duration-700': !isMainMenu}"
+    <div  class="transition-all ease-in-out fixed  w-full h-screen top-0 left-0 right-0 bottom-0  bg-primary overflow-y-scroll z-40" :class="{'translate-x-0 duration-1000': isMainMenu, 'translate-x-[440px] duration-700': !isMainMenu}"
     >
       <ul class="flex flex-col gap-3 px-2 my-20 mx-10 bg-white rounded-lg shadow-lg" >
         <!-- Dashboard -->
         <li>
           <NuxtLink to="/dashboard" @click="isMainMenu = false" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-xl bg-white shadow-lg flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
               <Icon name="material-symbols:dashboard-outline" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Dashboard</span>
@@ -48,7 +48,7 @@ const isMainMenu = ref(false);
         <!-- Pos -->
         <li>
           <NuxtLink to="/pos" @click="isMainMenu = false" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-xl bg-white shadow-lg flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
               <Icon name="material-symbols:position-bottom-right-outline-rounded" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Pos</span>
@@ -59,7 +59,7 @@ const isMainMenu = ref(false);
         <!-- Order -->
         <li>
           <NuxtLink to="/order" @click="isMainMenu = false" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-xl bg-white shadow-lg flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
               <Icon name="tabler:shopping-bag" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Order</span>
@@ -70,7 +70,7 @@ const isMainMenu = ref(false);
         <!-- Shop -->
         <li>
           <div class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300 cursor-pointer relative" @click="isShopLinks = !isShopLinks">
-            <span class="sideBarLink__icon w-12 h-12 rounded-xl bg-white shadow-lg flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
               <Icon name="material-symbols:shopping-bag-outline" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Shop</span>
@@ -118,7 +118,7 @@ const isMainMenu = ref(false);
         <!-- Services -->
         <li>
           <NuxtLink to="/services"  @click="isMainMenu = false" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-xl bg-white shadow-lg flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
               <Icon name="fluent:people-settings-20-regular" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Services</span>
@@ -129,7 +129,7 @@ const isMainMenu = ref(false);
         <!-- Customers -->
         <li>
           <NuxtLink to="/customers"  @click="isMainMenu = false" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-xl bg-white shadow-lg flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
               <Icon name="ci:users-group" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Customers</span>
@@ -140,7 +140,7 @@ const isMainMenu = ref(false);
         <!-- invoice -->
         <li>
           <NuxtLink to="/invoice"  @click="isMainMenu = false" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-xl bg-white shadow-lg flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
               <Icon name="teenyicons:invoice-outline" size="21" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Invoice</span>
@@ -151,7 +151,7 @@ const isMainMenu = ref(false);
         <!-- plans -->
         <li>
           <NuxtLink to="/plans"  @click="isMainMenu = false" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-xl bg-white shadow-lg flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
               <Icon name="material-symbols-light:rocket-outline" size="28" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Plans</span>
@@ -162,7 +162,7 @@ const isMainMenu = ref(false);
         <!-- Transactions -->
         <li>
           <NuxtLink to="/transactions"  @click="isMainMenu = false" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-xl bg-white shadow-lg flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center">
               <Icon name="uil:transaction" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Transactions</span>

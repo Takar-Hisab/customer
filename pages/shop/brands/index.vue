@@ -17,7 +17,7 @@
 
 
 
-    const selectedColumns = ref(columns)
+const selectedColumns = ref(columns)
 const columnsTable = computed(() => columns.filter((column) => selectedColumns.value.includes(column)))
 
 // Selected Rows
@@ -71,7 +71,7 @@ const pageTotal = ref(200) // This value should be dynamic coming from the API
 const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1)
 const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.value))
 
-// Data
+
 const { data: brands, pending, refresh } = await useLazyAsyncData(
     'brands', () => ($fetch as any)(`/brands`, {
       baseURL: useRuntimeConfig().public?.baseUrl,
@@ -83,6 +83,7 @@ const { data: brands, pending, refresh } = await useLazyAsyncData(
       console.log(brands);
     })
 </script>
+
 <template>
     <!-- BreadCrumb -->
       <Breadcrumb page="Product brands" icon="i-heroicons-list-bullet" />
@@ -106,9 +107,12 @@ const { data: brands, pending, refresh } = await useLazyAsyncData(
         footer: { padding: 'p-4' }
         }"
     >
-        <template #header>
-          <Heading>Product Brands</Heading>
-        </template>
+
+          <template #header>
+            <Heading>Product Brands</Heading>
+          </template>
+          
+
 
         <!-- Filters -->
         <div class="flex items-center justify-between gap-3 px-4 py-3">

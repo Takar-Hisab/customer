@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+const isOpen = ref(false)
 const items = [
   [
     {
@@ -25,17 +26,46 @@ const items = [
     shortcuts: ['⌘', 'D']
   }]
 ]
-
-  const { data: services, pending, refresh } = await useLazyAsyncData(
-      'services',
-      () => ($fetch as any)(`/services`, {
-      baseURL: useRuntimeConfig().public?.baseUrl,
-      credentials: 'include',
-  }));
-
-onMounted(() => {
-  refresh();
+//add service
+const state = reactive({
+  name:null,
+  position:null,
 });
+
+const onSubmit = async () => {
+  await execute();
+
+  if(data.value){
+    toast.add({ title: "Data Save Successfully Done..." })
+  }
+  if(error.value){
+    toast.add({ title:error.value.data.message, color:"red" })
+  }
+};
+const {data, status, execute} = useAsyncData(
+    async () => {
+      return await $fetch(`/service`, {
+        baseURL: useRuntimeConfig().public?.baseUrl,
+        method: "POST",
+        body:state,
+      });
+    },
+    {
+      immediate: false,
+    }
+);
+
+
+//Get Services
+const { data: services, error, pending, refresh } = useLazyAsyncData(
+    'services',
+    () => $fetch( `/service`, {
+      method: 'GET',
+      baseURL: useRuntimeConfig().public.baseUrl,
+    }));
+onMounted(() => {
+  refresh()
+})
 </script>
 
 <template>
@@ -68,6 +98,7 @@ onMounted(() => {
           variant="solid"
           label="Add Service"
           :trailing="false"
+          @click="isOpen = true"
         />
       </div>
     </div>
@@ -80,10 +111,50 @@ onMounted(() => {
               <UButton color="primary" variant="soft" trailing-icon="i-heroicons-sparkles" :ui="{'rounded' : 'rounded-full'}" />
             </UDropdown>
           </div>
-          <NuxtLink to='/services/slug' class="mt-2 mb-8 text-lg block">{{service?.name}}</NuxtLink>
+          <NuxtLink :to='`/services/${service?.id}`' class="mt-2 mb-8 text-lg block">{{service?.name}}</NuxtLink>
           <span class="bg-primary-50 py-1 px-3 rounded-full inline-block text-primary-900 text-sm">Position: {{service?.position}}</span>
         </div>
       </div>
     </div>
   </div>
+
+
+  <USlideover v-model="isOpen" >
+    <UCard class="flex flex-col flex-1" :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+      <template #header>
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+            Add New Service
+          </h3>
+          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="isOpen = false" />
+        </div>
+      </template>
+
+      <UForm :state="state" @submit="onSubmit">
+        <UFormGroup label="Name" class="mb-5">
+          <UInput placeholder="Service Name" color="primary" size="lg" v-model="state.name"  />
+        </UFormGroup>
+        <UFormGroup label="Position">
+          <UInput placeholder="Service Position" color="primary" size="lg" v-model="state.position" />
+        </UFormGroup>
+        <div class="flex items-center gap-3 mt-5">
+          <UButton
+              size="lg"
+              color="primary"
+              variant="solid"
+              label="Save"
+              type="submit"
+          />
+          <UButton
+              size="lg"
+              color="primary"
+              variant="outline"
+              label="Cancel"
+              type="reset"
+              @click="isOpen = false"
+          />
+        </div>
+      </UForm>
+    </UCard>
+  </USlideover>
 </template>

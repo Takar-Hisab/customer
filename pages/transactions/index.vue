@@ -134,12 +134,12 @@ const { data: todos, pending } = await useLazyAsyncData<{
         <div class="flex items-center justify-between">
           <Heading>Transactions</Heading>
           <UButton
-            class="hidden lg:block"
+            class="hidden lg:flex"
             icon="i-heroicons-pencil-square"
             size="sm"
             color="primary"
             variant="solid"
-            label="Create Invoice"
+            label="Add New"
             :trailing="false"
           />
         </div>

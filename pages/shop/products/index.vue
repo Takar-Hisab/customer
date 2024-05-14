@@ -2,6 +2,7 @@
   const toast = useToast();
   const isScrolled = ref(false);
   const isFilter = ref(false);
+
   const handleScroll = () => {
     isScrolled.value = window.scrollY > 50;
   };
@@ -59,6 +60,9 @@
       () => $fetch( `/product`, {
         method: 'GET',
         baseURL: useRuntimeConfig().public.baseUrl,
+        headers:{
+          authorization: `Bearer ${useTokenStore().customer_token}`
+        }
       }));
       onMounted(() => {
         refresh()
@@ -93,7 +97,7 @@
               color="primary"
               square
               variant="solid"
-              @click="isOpen = true"
+              @click="isFilter = true"
           />
           <UButton
             class="hidden lg:flex"
@@ -107,16 +111,17 @@
           />
       </div>
       </header>
-      <div class="" v-if="pending">
-        <p class="text-4xl font-bold text-center py-20 text-primary">Loading</p>
+      <div :class="{'lg:mr-[500px]' : isFilter}" class="transition-all ease-in-out duration-300">
+        <div class="" v-if="pending">
+          <p class="text-4xl font-bold text-center py-20 text-primary">Loading</p>
+        </div>
+        <div class="grid grid-cols-2 gap-3 transition-all ease-in-out duration-700" v-else-if="products != null" :class="{ 'lg:grid-cols-2': isFilter,  'lg:grid-cols-4': !isFilter, }">
+          <ProductCard v-for="(product, index) in products?.data" :data="product"  :key="index"/>
+        </div>
+        <div v-else>
+          <p class="text-4xl font-bold text-center py-20 text-primary">Products Not Found !</p>
+        </div>
       </div>
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3" v-else-if="products != null">
-        <ProductCard v-for="(product, index) in products?.data" :data="product"  :key="index"/>
-      </div>
-      <div v-else>
-        <p class="text-4xl font-bold text-center py-20 text-primary">Products Not Found !</p>
-      </div>
-
     </div>
     
     <!-- Products End -->
@@ -159,14 +164,14 @@
     </UModal>
 
 
-  <USlideover v-model="isOpen" >
+  <div class="fixed top-0 right-0 bottom-0 w-[500px] h-screen bg-white transition-all ease-in-out duration-300" :class="{'translate-x-0' : isFilter, 'translate-x-[500px]' : !isFilter}">
     <UCard class="flex flex-col flex-1" :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
       <template #header>
         <div class="flex items-center justify-between">
           <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
             Filter Products
           </h3>
-          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="isOpen = false" />
+          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="isFilter = false" />
         </div>
       </template>
 
@@ -228,7 +233,7 @@
         </div>
       </div>
     </UCard>
-  </USlideover>
+  </div>
 </template>
 
 

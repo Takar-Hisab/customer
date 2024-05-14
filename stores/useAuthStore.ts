@@ -5,14 +5,14 @@ export default defineStore('auth', ()=>{
     const toast = useToast()
 
     async function fetchUser(){
-        return useApiFetch("user", {
+        return useApiFetch("/user", {
             method: "GET"
         });
     }
 
 
     async function login(credential: any){
-        return useApiFetch("login", {
+        return useApiFetch("/login", {
             method: "POST",
             body: credential,
             lazy: true
@@ -30,7 +30,7 @@ export default defineStore('auth', ()=>{
     }
 
     async function logout(){
-        const {data, error} = await useApiFetch("logout",{method:"POST"})
+        const {data, error} = await useApiFetch("/logout",{method:"POST"})
         if(data.value) {
             useTokenStore().removeToken()
             // @ts-ignore

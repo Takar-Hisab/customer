@@ -6,15 +6,15 @@
 <template>
     <div class="h-full">
         <div class="flex flex-col bg-white rounded-xl p-2 shadow-lg">
-            <div class="w-full h-40">
+            <NuxtLink :to="`/shop/products/${data?.sku}`"  class="w-full h-40 block">
                 <img v-if="data?.image" class="w-full h-full rounded-xl" :src="data?.image">
                 <div v-else class="w-full h-full bg-gray-400 flex items-center justify-center rounded-xl">
                   <p class="text-gray-800">{{data?.sku}}</p>
                 </div>
-            </div>
+            </NuxtLink>
             <div class="p-2">
                 <h4 class="leading-tight mb-2">
-                    <NuxtLink :to="`/${data?.sku}`" class="text-sm lg:text-lg leading-tight hover:text-primary">{{data?.name?.substring(0, 40)}}</NuxtLink>
+                    <NuxtLink :to="`/shop/products/${data?.sku}`" class="text-sm lg:text-lg leading-tight hover:text-primary">{{data?.name?.substring(0, 40)}}</NuxtLink>
                 </h4>
                 <div class="flex items-center justify-between mb-2">
                   <p class="flex items-center gap-1">

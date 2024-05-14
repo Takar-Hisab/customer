@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --port=3000",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -19,7 +19,8 @@
     "v-calendar": "^3.1.2",
     "vue": "^3.4.19",
     "vue-chartjs": "^5.3.1",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0"

@@ -1,10 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   css: ['~/assets/css/main.css'],
   modules: [
     '@nuxt/ui',
     '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
   ],
 
   runtimeConfig: {
@@ -15,7 +16,7 @@ export default defineNuxtConfig({
   },
     app:{
         head:{
-            title:"Takar-Hisab | Tushar Imran | Creativetechpark",
+            title:"Customer Panel | Takar-Hisab | Tushar Imran | Creativetechpark",
         }
     },
 })

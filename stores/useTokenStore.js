@@ -1,38 +1,38 @@
 import { defineStore } from 'pinia'
 
-export const useTokenStore = defineStore('token', {
+export const useTokenStore = defineStore('customer_token', {
     state: () => {
         return {
-            token: null,
-            isLogin:  false,
-            authUser: null,
+            customer_token: null,
+            customer_isLogin:  false,
+            customer_authUser: null,
         }
     },
 
     actions:{
         setToken(data){
-            this.token = data.token
-            this.isLogin = true;
+            this.customer_token = data.token
+            this.customer_isLogin = true;
         },
         setAuthUser(data){
-            this.authUser = data
+            this.customer_authUser = data
         },
 
         removeToken(token){
-            this.token = null
-            this.isLogin = false
-            this.authUser = null
+            this.customer_token = null
+            this.customer_isLogin = false
+            this.customer_authUser = null
         }
     },
     getters:{
         getToken(){
-            return this.token
+            return this.customer_token
         },
         getIsLogin(){
-            return this.isLogin
+            return this.customer_isLogin
         },
         getAuthUser(){
-            return this.authUser
+            return this.customer_authUser
         }
     },
 

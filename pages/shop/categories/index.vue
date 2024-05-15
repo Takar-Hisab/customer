@@ -1,4 +1,9 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: ['auth']
+})
+
+import { format } from 'date-fns'
 
 const isOpen = ref(false);
 // Columns
@@ -90,10 +95,12 @@ const { data: categories, error, pending, refresh } = useLazyAsyncData(
     () => $fetch( `/category`, {
       method: 'GET',
       baseURL: useRuntimeConfig().public.baseUrl,
+      headers: {
+        authorization: `Bearer ${useTokenStore().customer_token}`
+      }
     }));
 onMounted(() => {
   refresh()
-  console.log(categories);
 })
 </script>
 <template>

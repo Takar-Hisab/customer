@@ -1,5 +1,7 @@
 <script setup lang="ts">
-
+definePageMeta({
+  middleware: ['auth']
+})
 import {format} from "date-fns";
 
 

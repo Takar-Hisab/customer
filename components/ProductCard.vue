@@ -8,8 +8,8 @@
         <div class="flex flex-col bg-white rounded-xl p-2 shadow-lg">
             <NuxtLink :to="`/shop/products/${data?.sku}`"  class="w-full h-40 block">
                 <img v-if="data?.image" class="w-full h-full rounded-xl" :src="data?.image">
-                <div v-else class="w-full h-full bg-gray-400 flex items-center justify-center rounded-xl">
-                  <p class="text-gray-800">{{data?.sku}}</p>
+                <div v-else class="w-full h-full bg-gray-300 flex items-center justify-center rounded-xl">
+                  <p class="text-gray-800 text-xl font-semibold">{{data?.sku}}</p>
                 </div>
             </NuxtLink>
             <div class="p-2">
@@ -18,7 +18,7 @@
                 </h4>
                 <div class="flex items-center justify-between mb-2">
                   <p class="flex items-center gap-1">
-                    SKU: <UBadge>{{data?.sku}}</UBadge>
+                    SKU: <span class="bg-primary rounded-md text-white px-2 py-1 text-xs">{{data?.sku}}</span>
                   </p>
                   <p class="text-lg font-normal text-gray-800 flex items-center gap-1">
                     <Icon name="i-heroicons-currency-bangladeshi" class="text-primary" />{{data?.price}}
@@ -43,6 +43,7 @@
                         color="primary"
                         square
                         variant="soft"
+                        @click="$emit('delete', data?.id)"
                     />
                 </div>
             </div>

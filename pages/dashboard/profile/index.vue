@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  definePageMeta({
+  middleware: ['auth']
+})
+</script>
 <template>
   <Breadcrumb page="profile" icon="i-heroicons-user" />
   <BackButton />

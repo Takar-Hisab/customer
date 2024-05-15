@@ -1,4 +1,8 @@
 <script setup lang="ts">
+
+definePageMeta({
+  middleware: ['auth']
+})
     // Columns
   const columns = [{
     key: 'name',
@@ -6,7 +10,7 @@
     sortable: true
   },
     {
-      key:'lastUpdate',
+      key:'updated_at',
       label: 'Last Update',
       sortable: true,
     }
@@ -80,10 +84,12 @@ const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.v
         () => $fetch( `/brand`, {
           method: 'GET',
           baseURL: useRuntimeConfig().public.baseUrl,
+          headers: {
+            authorization: `Bearer ${useTokenStore().customer_token}`
+          }
         }));
     onMounted(() => {
       refresh()
-      console.log(brands);
     })
 </script>
 

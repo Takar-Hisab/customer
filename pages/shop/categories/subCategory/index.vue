@@ -1,5 +1,7 @@
 <script setup lang="ts">
-
+definePageMeta({
+  middleware: ['auth']
+})
 const isOpen = ref(false);
 // Columns
 const columns = [{

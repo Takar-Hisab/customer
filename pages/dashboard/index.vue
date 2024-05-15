@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
-
+definePageMeta({
+  middleware: ['auth']
+})
   const links = [{
       label: 'Takar Hisab',
       icon: 'i-heroicons-home',

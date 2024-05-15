@@ -1,7 +1,9 @@
 <script setup lang="ts">
 
 definePageMeta({
-  layout: 'pos'
+  layout: 'pos',
+  middleware: ['auth']
+
 })
 
 const categories = [

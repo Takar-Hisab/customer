@@ -1,45 +1,34 @@
 <script setup lang="ts">
+  definePageMeta({
+  middleware: ['auth']
+})
   const toast = useToast();
-  const isScrolled = ref(false);
   const isFilter = ref(false);
 
-  const handleScroll = () => {
-    isScrolled.value = window.scrollY > 50;
-  };
+  const isProductCreate = ref(false)
+  const form = ref({
+    price:0,
+    category:null,
+    brand:null
+  })
 
-  onMounted(() => {
-      window.addEventListener('scroll', handleScroll);
+  // Create Product
+  const state = reactive({
+    sku:null,
+    price:null,
   });
-
-  onBeforeUnmount(() => {
-      window.removeEventListener('scroll', handleScroll);
-  });
-
-
-    const isOpen = ref(false)
-    const isProductCreate = ref(false)
-    const form = ref({
-      price:0,
-      category:null,
-      brand:null
-    })
-
-    // Create Product
-    const state = reactive({
-      sku:null,
-      price:null,
-    });
 
   const onSubmit = async () => {
     await execute();
 
     if(data.value){
-      toast.add({ title: "Data Save Successfully Done..." })
+      refresh()
+      toast.add({ title: "Data Save Successfully Done..." });
+      isProductCreate.value = false;
     }
     if(error.value){
       toast.add({ title:error.value.data.message, color:"red" })
     }
-    const isProductCreate = false;
   };
   const {data, status, execute} = useAsyncData(
       async () => {
@@ -47,6 +36,9 @@
           baseURL: useRuntimeConfig().public?.baseUrl,
           method: "POST",
           body:state,
+          headers:{
+            authorization: `Bearer ${useTokenStore().customer_token}`
+          }
         });
       },
       {
@@ -68,6 +60,17 @@
         refresh()
       })
 
+//Delete Products
+const deleteProduct = async (id) => {
+  await $fetch(`/product/${id}`, {
+          baseURL: useRuntimeConfig().public?.baseUrl,
+          method: "DELETE",
+          headers:{
+            authorization: `Bearer ${useTokenStore().customer_token}`
+          }
+        });
+        refresh()
+  }
 </script>
 <template>
   <div>
@@ -116,7 +119,7 @@
           <p class="text-4xl font-bold text-center py-20 text-primary">Loading</p>
         </div>
         <div class="grid grid-cols-2 gap-3 transition-all ease-in-out duration-700" v-else-if="products != null" :class="{ 'lg:grid-cols-2': isFilter,  'lg:grid-cols-4': !isFilter, }">
-          <ProductCard v-for="(product, index) in products?.data" :data="product"  :key="index"/>
+          <ProductCard v-for="(product, index) in products?.data" :data="product"  :key="index" @delete="deleteProduct" />
         </div>
         <div v-else>
           <p class="text-4xl font-bold text-center py-20 text-primary">Products Not Found !</p>

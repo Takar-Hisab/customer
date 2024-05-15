@@ -1,4 +1,8 @@
 <script setup lang="ts">
+definePageMeta({
+  middleware: ['auth']
+})
+
 import { format } from 'date-fns'
 const isScrolled = ref(false);
 

@@ -1,52 +1,46 @@
 <script setup lang="ts">
+import { format } from 'date-fns'
+
 definePageMeta({
   middleware: ['auth']
 })
 
 // Columns
 const columns = [{
-  key: 'order',
-  label: 'ORDER',
+  key: 'order_id',
+  label: 'ORDER ID',
   sortable: true
 }, {
-  key: 'date',
+  key: 'order_date',
   label: 'DATE',
   sortable: true
 }, {
   key: 'name',
   label: 'NAME',
   sortable: true
-}
-  , {
-    key: 'value',
-    label: 'VALUE',
-    sortable: true
-  },
-  , {
-    key: 'paymentType',
-    label: 'PAYMENT TYPE',
-    sortable: true
-  },
-  , {
-    key: 'reciept',
-    label: 'RECIEPT',
+},
+
+  {
+    key: 'amount',
+    label: 'AMOUNT',
     sortable: true
   },
   {
-    key: 'status',
-    label: 'STATUS',
+    key: 'payment',
+    label: 'PAYMENT',
     sortable: true
   },
-   {
-    key: 'paymentStatus',
-    label: 'PAYMENT STATUS',
+  , {
+    key: 'order',
+    label: 'ORDER',
     sortable: true
   },
   , {
     key: 'action',
     label: 'Action',
     sortable: true
-  }]
+  }
+  ]
 
 const selectedColumns = ref(columns)
 const columnsTable = computed(() => columns.filter((column) => selectedColumns.value.includes(column)))
@@ -104,11 +98,12 @@ const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1)
 const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.value))
 
 // Data
-const { data: todos, pending } = await useLazyAsyncData<{
-  id: number
-  title: string
-  completed: string
-}[]>('todos', () => ($fetch as any)(`https://jsonplaceholder.typicode.com/todos${searchStatus.value}`, {
+const { data: orders, pending, refresh } = await useLazyAsyncData
+('orders', () => ($fetch as any)(`/order`, {
+  baseURL: useRuntimeConfig().public.baseUrl,
+  headers: {
+    authorization: `Bearer ${useTokenStore().customer_token}`
+  },
   query: {
     q: search.value,
     '_page': page.value,
@@ -119,6 +114,11 @@ const { data: todos, pending } = await useLazyAsyncData<{
 }), {
   default: () => [],
   watch: [page, search, searchStatus, pageCount, sort]
+})
+
+onMounted(() => {
+  refresh()
+  console.log(orders);
 })
 </script>
 <template>
@@ -193,7 +193,7 @@ const { data: todos, pending } = await useLazyAsyncData<{
         <UTable
             v-model="selectedRows"
             v-model:sort="sort"
-            :rows="todos"
+            :rows="orders?.data"
             :columns="columnsTable"
             :loading="pending"
             sort-asc-icon="i-heroicons-arrow-up-20-solid"
@@ -204,13 +204,60 @@ const { data: todos, pending } = await useLazyAsyncData<{
             :ui="{ td: { base: 'max-w-[0] truncate' }, default: { checkbox: { color: 'gray' } } }"
             @select="select"
         >
-          <template #order-data="{ row }">
+          <template #order_id-data="{ row }" >
             <UTooltip text="Detail" :popper="{ placement: 'top'}" :ui="{ background : 'bg-primary', color: 'text-white'}">
               <NuxtLink to="/">
-                <UBadge variant="outline" size="lg" label="#56786" />
+                <UBadge variant="outline" size="lg" :label="`${row?.order_id?.substring(0, 12)}..`" />
               </NuxtLink>
             </UTooltip>
           </template>
+          <template #name-data="{ row }">
+            <span>{{ row?.customer?.name }}</span>
+          </template>
+
+          <template #order-data="{row}" >
+            <UPopover mode="hover" :popper="{ placement: 'top' }">
+              <UButton variant="soft":ui="{rounded:'rounded-full'}"  square>
+                <Icon name="material-symbols:fitbit-check-small-sharp" size="20" />
+              </UButton>
+              <template #panel>
+                <div class="bg-primary p-2">
+                  <p class="text-white">Type: {{row?.order_type}}</p>
+                  <p class="text-white">Status: {{row?.order_status}}</p>
+                </div>
+              </template>
+            </UPopover>
+          </template>
+
+          <template #amount-data="{row}" >
+            <UPopover mode="hover" :popper="{ placement: 'top' }">
+              <UButton variant="soft":ui="{rounded:'rounded-full'}"  square>
+                <Icon name="material-symbols:fitbit-check-small-sharp" size="20" />
+              </UButton>
+              <template #panel>
+                <div class="bg-primary p-2">
+                  <p class="text-white">Pay Bill: {{row?.pay_bill}}</p>
+                  <p class="text-white">Pay Due: {{row?.pay_due}}</p>
+                  <p class="text-white">Grand Total: {{row?.grand_total}}</p>
+                </div>
+              </template>
+            </UPopover>
+          </template>
+
+          <template #payment-data="{row}" >
+            <UPopover mode="hover" :popper="{ placement: 'top' }">
+              <UButton variant="soft":ui="{rounded:'rounded-full'}"  square>
+                <Icon name="material-symbols:fitbit-check-small-sharp" size="20" />
+              </UButton>
+              <template #panel>
+                <div class="bg-primary p-2">
+                  <p class="text-white">Method: {{row?.payment_method}}</p>
+                  <p class="text-white">Status: {{row?.payment_status}}</p>
+                </div>
+              </template>
+            </UPopover>
+          </template>
+
 
           <template #completed-data="{ row }">
             <UBadge size="xs" :label="row.completed ? 'Completed' : 'In Progress'" :color="row.completed ? 'emerald' : 'orange'" variant="subtle" />
@@ -218,21 +265,22 @@ const { data: todos, pending } = await useLazyAsyncData<{
 
 
           <template #action-data="{ row }">
-            <div class="flex items-center gap-3">
-              <UTooltip text="Detail" :popper="{ placement: 'top'}" :ui="{ background : 'bg-primary', color: 'text-white'}">
+            
+              <div class="text-center">
+                <UTooltip text="Detail" :popper="{ placement: 'top'}" :ui="{ background : 'bg-primary', color: 'text-white'}">
                 <UButton
                     icon="i-heroicons-eye"
                     variant="soft"
-                    to="/order/slug"
+                    :to="`/order/${row?.id}`"
                 />
               </UTooltip>
-              <UTooltip text="Delete" :popper="{ placement: 'top'}" :ui="{ background : 'bg-primary', color: 'text-white'}">
+              </div>
+              <!-- <UTooltip text="Delete" :popper="{ placement: 'top'}" :ui="{ background : 'bg-primary', color: 'text-white'}">
                 <UButton
                     icon="i-heroicons-trash-20-solid"
                     variant="soft"
                 />
-              </UTooltip>
-            </div>
+              </UTooltip> -->
           </template>
         </UTable>
 

@@ -88,6 +88,34 @@ const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.v
             authorization: `Bearer ${useTokenStore().customer_token}`
           }
         }));
+
+    //edit brand
+    const isEdit = ref(false);
+    const editState = reactive({
+      id:undefined,
+      name:undefined,
+    });
+
+    const editBrand = (brand: object) => {
+      isEdit.value = true;
+      editState.id = brand?.id;
+      editState.name = brand?.name;
+    }
+
+    const onUpdate = async (id) => {
+        await $fetch(`/brand/${id}`, {
+            baseURL: useRuntimeConfig().public?.baseUrl,
+            method: "PATCH",
+            body:editState,
+            headers: {
+              authorization: `Bearer ${useTokenStore().customer_token}`
+            }
+        });
+        isEdit.value = false
+        refresh()
+      }
+      
+      
     onMounted(() => {
       refresh()
     })
@@ -204,6 +232,7 @@ const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.v
                         color="primary"
                         square
                         variant="soft"
+                        @click="editBrand(row)"
                     />
                     <UButton
                         icon="i-heroicons-trash"
@@ -211,6 +240,7 @@ const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.v
                         color="primary"
                         square
                         variant="soft"
+                        @click="deleteBrand(row?.id)"
                     />
                 </div>
             </template>
@@ -268,9 +298,6 @@ const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.v
         <UFormGroup label="Name" class="mb-5">
           <UInput placeholder="Brand Name" color="primary" size="lg"  />
         </UFormGroup>
-        <UFormGroup label="Logo" class="mb-5">
-          <UInput type="file" size="lg" icon="i-heroicons-folder" color="primary" />
-        </UFormGroup>
         <div class="flex items-center gap-3 mt-5">
           <UButton
               size="lg"
@@ -283,6 +310,44 @@ const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.v
               color="primary"
               variant="outline"
               label="Cancel"
+          />
+        </div>
+      </UForm>
+    </UCard>
+  </USlideover>
+
+
+  <!-- Edit Brand -->
+  <USlideover v-model="isEdit" >
+    <UCard class="flex flex-col flex-1" :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+      <template #header>
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+            Add New Brand
+          </h3>
+          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="isEdit = false" />
+        </div>
+      </template>
+
+      <UForm :state="editState" @submit="onUpdate(editState.id)">
+        <UFormGroup label="Name" class="mb-5">
+          <UInput placeholder="Brand Name" v-model="editState.name" color="primary" size="lg"  />
+        </UFormGroup>
+        <div class="flex items-center gap-3 mt-5">
+          <UButton
+              size="lg"
+              color="primary"
+              variant="solid"
+              label="Save"
+              type="submit"
+          />
+          <UButton
+              size="lg"
+              color="primary"
+              variant="outline"
+              label="Cancel"
+              type="reset"
+              @clcik="isEdit = false"
           />
         </div>
       </UForm>

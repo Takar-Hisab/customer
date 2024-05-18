@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type Sku from '../shop/products/[sku].vue';
 
 
 const items = [

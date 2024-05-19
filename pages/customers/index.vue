@@ -27,10 +27,6 @@
 
 // Columns
 const columns = [{
-  key: 'avatar',
-  label: 'Avatar',
-  sortable: true
-}, {
   key: 'name',
   label: 'Name',
   sortable: true
@@ -44,6 +40,11 @@ const columns = [{
   label: 'Phone',
   sortable: true
 },
+  {
+    key: 'join_date',
+    label: 'Join Date',
+    sortable: true
+  },
 , {
   key: 'action',
   label: 'Action',
@@ -106,11 +107,16 @@ const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1)
 const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.value))
 
 // Data
-const { data: todos, pending } = await useLazyAsyncData<{
+const { data: customers, pending, refresh } = await useLazyAsyncData<{
   id: number
   title: string
   completed: string
-}[]>('todos', () => ($fetch as any)(`https://jsonplaceholder.typicode.com/todos${searchStatus.value}`, {
+}[]>('customers', () => ($fetch as any)(`/customers`, {
+  method: 'GET',
+  baseURL: useRuntimeConfig().public.baseUrl,
+  headers: {
+    authorization: `Bearer ${useTokenStore().customer_token}`
+  },
   query: {
     q: search.value,
     '_page': page.value,
@@ -122,6 +128,10 @@ const { data: todos, pending } = await useLazyAsyncData<{
   default: () => [],
   watch: [page, search, searchStatus, pageCount, sort]
 })
+  onMounted(() => {
+    refresh()
+    console.log(customers.value.data);
+  })
 </script>
 <template>
   <!-- BreadCrumb -->
@@ -148,7 +158,7 @@ const { data: todos, pending } = await useLazyAsyncData<{
   >
     <template #header>
       <Heading>
-        Shop Customers
+        Store Customers
       </Heading>
     </template>
 
@@ -197,7 +207,7 @@ const { data: todos, pending } = await useLazyAsyncData<{
     <UTable
       v-model="selectedRows"
       v-model:sort="sort"
-      :rows="todos"
+      :rows="customers?.data"
       :columns="columnsTable"
       :loading="pending"
       sort-asc-icon="i-heroicons-arrow-up-20-solid"
@@ -208,19 +218,23 @@ const { data: todos, pending } = await useLazyAsyncData<{
       :ui="{ td: { base: 'max-w-[0] truncate' }, default: { checkbox: { color: 'gray' } } }"
       @select="select"
     >
-      <template #completed-data="{ row }">
-        <UBadge size="xs" :label="row.completed ? 'Completed' : 'In Progress'" :color="row.completed ? 'emerald' : 'orange'" variant="subtle" />
+      <template #name-data="{ row }">
+        <div class="flex items-center gap-2">
+          <div class="h-10 w-10 bg-primary rounded-full flex items-center justify-center">
+            <p class="text-white text-xl">{{row?.user?.name?.substring(0, 1)}}</p>
+          </div>
+          <h4>{{row?.user?.name}}</h4>
+        </div>
       </template>
-      <template #avatar-data="{ row }">
-        <UAvatar
-          chip-color="primary"
-          chip-text=""
-          chip-position="top-right"
-          size="sm"
-          src="https://avatars.githubusercontent.com/u/739984?v=4"
-          alt="Avatar"
-        />
+
+      <template #email-data="{ row }">
+        <p>{{row?.user?.email}}</p>
       </template>
+
+      <template #phone-data="{ row }">
+        <p>{{row?.user?.phone}}</p>
+      </template>
+
 
       <template #action-data="{ row }">
         <UDropdown :items="actionLinks" :ui="{'ring' : 'ring-primary'}" :popper="{ placement: 'bottom-start' }">

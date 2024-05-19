@@ -101,72 +101,102 @@ const selected = ref([])
       <UBreadcrumb :links="links" />
     </div>
     <!-- Widgets -->
-    <div class="p-2 lg:p-4 rounded-lg lg:rounded-2xl  flex flex-wrap items-center bg-primary lg:bg-white w-full overflow-y-scroll">
-      <div class="w-1/2 lg:w-1/4 px-2 lg:pl-0 mb-2 lg:mb-0">
-        <div class="bg-gray-200 rounded-2xl p-2 lg:p-5">
-          <div class="flex items-center gap-3">
-            <span class="bg-primary w-8 h-8 lg:w-10 lg:h-10 flex items-center justify-center rounded-xl">
-              <Icon name="mdi:cash-check" size="26" class="text-white" />
-            </span>
-            <span class="text-sm lg:text-lg">Total Sale</span>
+    <div class="flex p-2 lg:p-4 rounded-lg lg:rounded-2xl shadow-lg  ">
+      <div class="w-2/3 pr-4">
+        <div class=" w-full flex flex-wrap items-center bg-primary lg:bg-white w-full overflow-y-scroll">
+          <div class="w-1/2 lg:w-1/4 px-2 lg:pl-0 mb-2 lg:mb-0">
+            <div class="group bg-primary rounded-2xl p-2 lg:p-5 relative overflow-hidden w-full h-48 flex flex-col justify-between">
+              <div class="absolute  -top-16 -left-16 -rotate-45 group-hover:-rotate-[50deg] group-hover:scale-125 transition-all ease-in-out duration-500">
+                <Icon name="mdi:cash-check" size="220" class="text-gray-100/20" />
+              </div>
+              <h4 class="text-2xl text-white font-semibold">Total Sale</h4>
+              <div>
+                <h4 class="text-end text-white text-lg lg:text-4xl font-bold">$8000</h4>
+              </div>
+            </div>
           </div>
-          <div class="mt-5 lg:mt-20">
-            <span class="bg-primary-300 text-primary-900 rounded-full px-2 font-light inline-block mb-2">
-              +40%
-            </span>
-            <h4 class="text-lg lg:text-2xl font-medium"><span class="font-normal text-sm lg:text-xl text-gray-500">+</span>$8000</h4>
+          <div class="w-1/2 lg:w-1/4 px-2 lg:pl-0 mb-2 lg:mb-0">
+            <div class="group bg-primary rounded-2xl p-2 lg:p-5 relative overflow-hidden w-full h-48 flex flex-col justify-between">
+              <div class="absolute -rotate-45 -top-16 -left-16 -rotate-45 group-hover:-rotate-[50deg] group-hover:scale-125 transition-all ease-in-out duration-500">
+                <Icon name="carbon:ibm-data-product-exchange" size="220" class="text-gray-100/20" />
+              </div>
+              <h4 class="text-2xl text-white font-semibold">Products</h4>
+              <div>
+                <h4 class="text-end text-white text-lg lg:text-4xl font-bold">112</h4>
+              </div>
+            </div>
+          </div>
+          <div class="w-1/2 lg:w-1/4 px-2 lg:pl-0 mb-2 lg:mb-0">
+            <div class="group bg-primary rounded-2xl p-2 lg:p-5 relative overflow-hidden w-full h-48 flex flex-col justify-between">
+              <div class="absolute -rotate-45 -top-16 -left-16 -rotate-45 group-hover:-rotate-[50deg] group-hover:scale-125 transition-all ease-in-out duration-500">
+                <Icon name="material-symbols:settings-suggest-outline-rounded" size="220" class="text-gray-100/20" />
+              </div>
+              <h4 class="text-2xl text-white font-semibold">Services</h4>
+              <div>
+                <h4 class="text-end text-white text-lg lg:text-4xl font-bold">25</h4>
+              </div>
+            </div>
+          </div>
+          <div class="w-1/2 lg:w-1/4 px-2 lg:pl-0 mb-2 lg:mb-0">
+            <div class="group bg-primary rounded-2xl p-2 lg:p-5 relative overflow-hidden w-full h-48 flex flex-col justify-between">
+              <div class="absolute -rotate-45 -top-16 -left-16 -rotate-45 group-hover:-rotate-[50deg] group-hover:scale-125 transition-all ease-in-out duration-500">
+                <Icon name="material-symbols-light:remove-shopping-cart-rounded" size="220" class="text-gray-100/20" />
+              </div>
+              <h4 class="text-2xl text-white font-semibold">Orders</h4>
+              <div>
+                <h4 class="text-end text-white text-lg lg:text-4xl font-bold">25</h4>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="w-1/2 lg:w-1/4 px-2 mb-2 lg:mb-0">
-        <div class="bg-gray-200 rounded-2xl p-2 lg:p-5">
-          <div class="flex items-center gap-3">
-            <span class="bg-primary w-8 h-8 lg:w-10 lg:h-10 flex items-center justify-center rounded-xl">
-              <Icon name="mdi:cash-check" size="26" class="text-white" />
-            </span>
-            <span class="text-sm lg:text-lg">Income</span>
+      <div class="w-1/3 pl-4">
+        <div>
+        <!--    Card      -->
+          <div class="bg-primary w-full p-5 rounded-2xl h-48 flex flex-col justify-between relative overflow-hidden">
+            <!--    Vector      -->
+            <span class="absolute w-11/12 h-full  bg-primary-400 rounded-2xl -rotate-[30deg] -bottom-32 -right-10 z-10"></span>
+            <span class="absolute w-11/12 h-full bg-primary-400/30 rounded-2xl  -left-10 rotate-[30deg] -bottom-40 "></span>
+            <!--    Vector      -->
+
+            <div class="flex items-center justify-between relative z-10">
+              <h3 class="text-white text-xl font-semibold">Tushar Imran</h3>
+              <p class="text-white">Takar Hisab</p>
+            </div>
+            <div class="flex items-end justify-between relative z-10">
+              <div >
+                <p class="text-white text-medium text-lg">Available Balance</p>
+                <h3 class="text-3xl text-white font-semibold">$50,000</h3>
+              </div>
+              <div class="flex items-center">
+                <span class="w-8 h-8 rounded-full bg-gray-100/50 block"></span>
+                <span class="w-8 h-8 rounded-full bg-gray-100/50 block -ml-4"></span>
+              </div>
+            </div>
           </div>
-          <div class="mt-5 lg:mt-20">
-            <span class="bg-primary-300 text-primary-900 rounded-full px-2 font-light inline-block mb-2">
-              +40%
-            </span>
-            <h4 class="text-lg lg:text-2xl font-medium"><span class="font-normal text-xl text-gray-500">+</span>$8000</h4>
-          </div>
-        </div>
-      </div>
-      <div class="w-1/2 lg:w-1/4 px-2 lg:mb-0">
-        <div class="bg-gray-200 rounded-2xl p-2 lg:p-5">
-          <div class="flex items-center gap-3">
-            <span class="bg-primary w-8 h-8 lg:w-10 lg:h-10 flex items-center justify-center rounded-xl">
-              <Icon name="mdi:shopping-outline" size="22" class="text-white" />
-            </span>
-            <span class="text-sm lg:text-lg">Products</span>
-          </div>
-          <div class="mt-5 lg:mt-20">
-            <span class="bg-primary-300 text-primary-900 rounded-full px-2 font-light inline-block mb-2">
-              +40%
-            </span>
-            <h4 class="text-md lg:text-2xl font-medium"><span class="font-normal text-sm lg:text-xl text-gray-500">+</span>$8000</h4>
-          </div>
-        </div>
-      </div>
-      <div class="w-1/2 lg:w-1/4 px-2 lg:pr-0 lg:mb-0">
-        <div class="bg-gray-200 rounded-2xl p-2 lg:p-5">
-          <div class="flex items-center gap-3">
-            <span class="bg-primary w-8 h-8 lg:w-10 lg:h-10 flex items-center justify-center rounded-xl">
-              <Icon name="mdi:cash-check" size="26" class="text-white" />
-            </span>
-            <span class="text-sm lg:text-lg">Services</span>
-          </div>
-          <div class="mt-5 lg:mt-20">
-            <span class="bg-primary-300 text-primary-900 rounded-full px-2 font-light inline-block mb-2">
-              +40%
-            </span>
-            <h4 class="text-lg lg:text-2xl font-medium"><span class="font-normal text-xl text-gray-500">+</span>$12,000</h4>
+          <!--    Card End     -->
+          <div class="flex items-center justify-end gap-5 pt-4">
+            <UButton
+                size="sm"
+                color="primary"
+                variant="soft"
+            >
+              <Icon name="mdi:cash-plus" size="20" />
+              Add Money
+            </UButton>
+            <UButton
+                size="sm"
+                color="primary"
+                variant="soft"
+            >
+              <Icon name="mdi:cash-check" size="20" />
+              Withdraw
+            </UButton>
           </div>
         </div>
       </div>
     </div>
+
 
     <div class="flex flex-wrap py-8">
       <div class="w-full lg:w-1/3 lg:pr-3 mb-5 lg:mb-0">

@@ -56,7 +56,9 @@
           authorization: `Bearer ${useTokenStore().customer_token}`
         }
       }));
+
       onMounted(() => {
+        console.log(products.value)
         refresh()
       })
 

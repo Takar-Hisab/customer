@@ -6,8 +6,8 @@
    // Columns
 const columns = [
   {
-  key: 'date',
-  label: 'DATE',
+  key: 'transaction_id',
+  label: '# ID',
   sortable: true
 }, 
 {
@@ -16,12 +16,12 @@ const columns = [
   sortable: true
 },
 {
-  key: 'type',
+  key: 'transaction_type',
   label: 'TYPE',
   sortable: true
 }, {
-  key: 'payment-method',
-  label: 'PAYMENT METHOD',
+  key: 'transaction_method',
+  label: 'METHOD',
   sortable: true
 }, {
   key: 'amount',
@@ -89,12 +89,14 @@ const pageTotal = ref(200) // This value should be dynamic coming from the API
 const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1)
 const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.value))
 
-// Data
-const { data: todos, pending } = await useLazyAsyncData<{
-  id: number
-  title: string
-  completed: string
-}[]>('todos', () => ($fetch as any)(`https://jsonplaceholder.typicode.com/todos${searchStatus.value}`, {
+// get transactions
+const { data: transaction, pending, refresh } = await useLazyAsyncData
+('transaction', () => ($fetch as any)(`/transaction`, {
+  method: 'GET',
+  baseURL: useRuntimeConfig().public.baseUrl,
+  headers: {
+    authorization: `Bearer ${useTokenStore().customer_token}`
+  },
   query: {
     q: search.value,
     '_page': page.value,
@@ -107,6 +109,11 @@ const { data: todos, pending } = await useLazyAsyncData<{
   watch: [page, search, searchStatus, pageCount, sort]
 })
 
+
+  onMounted(() => {
+    refresh()
+    console.log(transaction.value)
+  })
 </script>
 <template>
   <!-- BreadCrumb  -->
@@ -118,7 +125,7 @@ const { data: todos, pending } = await useLazyAsyncData<{
   <BackButton />
   <!--  Back Button End  -->
   <div>
-    <!-- Invoce List -->
+    <!-- Invoice List -->
     <div>
         <div class="p-4 bg-white rounded-xl shadow-lg">
         <UCard
@@ -133,18 +140,18 @@ const { data: todos, pending } = await useLazyAsyncData<{
         }"
     >
         <template #header>
-        <div class="flex items-center justify-between">
-          <Heading>Transactions</Heading>
-          <UButton
-            class="hidden lg:flex"
-            icon="i-heroicons-pencil-square"
-            size="sm"
-            color="primary"
-            variant="solid"
-            label="Add New"
-            :trailing="false"
-          />
-        </div>
+          <div class="flex items-center justify-between">
+            <Heading>Transactions</Heading>
+            <UButton
+              class="hidden lg:flex"
+              icon="i-heroicons-pencil-square"
+              size="sm"
+              color="primary"
+              variant="solid"
+              label="Add New"
+              :trailing="false"
+            />
+          </div>
         </template>
 
         <!-- Filters -->
@@ -193,7 +200,7 @@ const { data: todos, pending } = await useLazyAsyncData<{
         <UTable
             v-model="selectedRows"
             v-model:sort="sort"
-            :rows="todos"
+            :rows="transaction"
             :columns="columnsTable"
             :loading="pending"
             sort-asc-icon="i-heroicons-arrow-up-20-solid"
@@ -210,19 +217,13 @@ const { data: todos, pending } = await useLazyAsyncData<{
             <template #action-data="{ row }">
                 <div class="flex items-center gap-3">
                   <UButton
-                        icon="i-heroicons-pencil-square"
+                        icon="i-heroicons-eye"
                         size="sm"
                         color="primary"
                         square
-                        variant="solid"
+                        variant="soft"
+                        :to="`/transactions/${row?.id}`"
                     />
-                  <UButton
-                      icon="i-heroicons-trash"
-                      size="sm"
-                      color="primary"
-                      square
-                      variant="solid"
-                  />
                 </div>
             </template>
             </UTable>

@@ -17,34 +17,45 @@
                     <NuxtLink :to="`/shop/products/${data?.sku}`" class="text-sm lg:text-lg leading-tight hover:text-primary">{{data?.name?.substring(0, 40)}}</NuxtLink>
                 </h4>
                 <div class="flex items-center justify-between mb-2">
-                  <p class="flex items-center gap-1">
-                    SKU: <span class="bg-primary rounded-md text-white px-2 py-1 text-xs">{{data?.sku}}</span>
-                  </p>
-                  <p class="text-lg font-normal text-gray-800 flex items-center gap-1">
-                    <Icon name="i-heroicons-currency-bangladeshi" class="text-primary" />{{data?.price}}
-                  </p>
+                  <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm">Price : </span>
+                      <span class="text-sm text-black">{{data?.price}}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm">SKU : </span>
+                      <span class="text-sm text-black">{{data?.sku}}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-sm">BARCODE : </span>
+                      <span class="text-sm text-black">{{data?.bar_code}}</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="flex items-center gap-1">
-                    <span class="w-2 h-2 rounded-full bg-primary block"></span>
-                    <p class="text-gray-600 text-sm">In Stock</p>
-                </div>
-                <div class="flex items-center justify-end gap-3">
-                    <UButton
-                        icon="i-heroicons-pencil-square"
-                        size="sm"
-                        color="primary"
-                        square
-                        variant="soft"
-                        :to="`/shop/products/update/${data?.sku}`"
-                    />
-                    <UButton
-                        icon="i-heroicons-trash"
-                        size="sm"
-                        color="primary"
-                        square
-                        variant="soft"
-                        @click="$emit('delete', data?.id)"
-                    />
+
+                <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-1">
+                      <span class="w-2 h-2 rounded-full bg-primary block"></span>
+                      <p class="text-gray-600 text-sm">In Stock</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <UButton
+                          icon="i-heroicons-pencil-square"
+                          size="sm"
+                          color="primary"
+                          square
+                          variant="soft"
+                          :to="`/shop/products/update/${data?.sku}`"
+                      />
+                      <UButton
+                          icon="i-heroicons-trash"
+                          size="sm"
+                          color="primary"
+                          square
+                          variant="soft"
+                          @click="$emit('delete', data?.id)"
+                      />
+                    </div>
                 </div>
             </div>
         </div>

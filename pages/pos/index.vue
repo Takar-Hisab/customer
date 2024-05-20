@@ -27,7 +27,8 @@ const categories = [
 ]
 const selected = ref(categories[0].id)
 const isOpen = ref(false)
-const isToggled = ref(true);
+const isDiscount = ref(false)
+const isShipping = ref(false)
 
 const items = [{
   key: 'products',
@@ -64,12 +65,13 @@ const { data: services, error: serviceError, pending: servicePending, refresh: s
 
 
 // get package
-const packages = ref(services?.value?.data[0] || null);
+const packages = ref(null);
+console.log(packages);
 
 onMounted(() => {
-  console.log(products)
   productRefresh()
   serviceRefresh()
+
 })
 </script>
 
@@ -104,7 +106,7 @@ onMounted(() => {
                 </div>
               </header>
               <div class="flex flex-wrap py-4">
-                  <div class="w-1/4 p-1" v-for="product in products.data">
+                  <div class="w-1/4 p-1" v-for="product in products?.data">
                     <div @click="addedToCart(product)" class="bg-white shadow rounded-lg overflow-hidden relative group cursor-pointer">
                       <span class="group-hover:opacity-100 opacity-0 absolute top-0 right-0 bottom-0 left-0 w-full h-full bg-primary-500/20 flex items-center justify-center transition-all ease-in-out duration-300">
                         <UIcon name="i-heroicons-plus-circle" class="text-4xl text-primary group-hover:mt-0 mt-10 group-hover:opacity-100 opacity-0 transition-all ease-in-out duration-500" />
@@ -116,11 +118,7 @@ onMounted(() => {
                       </div>
                       <div class="p-2">
                         <h4>{{product?.name}}</h4>
-                        <div class="flex items-center justify-between">
-                          <span class="inline-block text-gray-400 font-light text-sm">{{product?.category?.name}}</span>
-                          <p class="text-primary font-medium py-2 flex items-center gap-1">
-                            <Icon name="i-heroicons-currency-bangladeshi"/> {{product?.price}}</p>
-                        </div>
+                        <Text class="text-primary">{{product?.price}}</Text>
                       </div>
                     </div>
                   </div>
@@ -141,16 +139,19 @@ onMounted(() => {
               </header>
               <div class="flex">
                 <div class="w-1/4 pr-3">
+                  <Heading class="pt-4">Services</Heading>
                     <ul class="flex flex-col py-4 gap-1">
                       <li v-for="(service, i) in services?.data">
-                        <lable @click="packages = service" :class="{'bg-primary text-white' :  packages?.id == service?.id,  'bg-white text-black' :  packages?.id != service?.id }" class=" block px-4 py-2 cursor-pointer hover:bg-primary hover:text-white">{{service?.name}}</lable>
+                        <lable @click="packages = service" :class="{'bg-primary text-white' :  packages?.id === service?.id,  'bg-white text-black' :  packages?.id !== service?.id }" class=" block px-4 py-2 cursor-pointer hover:bg-primary hover:text-white">{{service?.name}}</lable>
                       </li>
                     </ul>
                 </div>
                 <div class="w-3/4">
-                  <div class="flex flex-wrap py-4">
+                  <Text v-if="packages == null" class="text-6xl font-bold text-primary-300/50 text-center pt-10">Select A Service</Text>
+                  <Text v-else-if="packages?.packages?.data == 0"  class="text-2xl font-bold text-primary-500 text-center pt-20">There is no package for service {{packages?.name}}!</Text>
+                  <div v-else class="flex flex-wrap py-4">
                     <div class="w-1/2 p-2" v-for="item in packages?.packages?.data">
-                      <div  class="overflow-hidden group bg-white rounded-xl  shadow-md shadow-gray-200 border border-primary-300 p-4  text-center relative cursor-pointer">
+                      <div @click="addedToCart(item)"  class="overflow-hidden group bg-white rounded-xl  shadow-md shadow-gray-200 border border-primary-300 p-4  text-center relative cursor-pointer">
                         <span class="group-hover:opacity-100 opacity-0 absolute top-0 right-0 bottom-0 left-0 w-full h-full bg-primary-500/20 flex items-center justify-center transition-all ease-in-out duration-300">
                           <UIcon name="i-heroicons-plus-circle" class="text-4xl text-primary group-hover:mt-0 mt-10 group-hover:opacity-100 opacity-0  transition-all ease-in-out duration-500" />
                         </span>
@@ -174,193 +175,194 @@ onMounted(() => {
       </div>
     </div>
       <!--    Side Bar-->
-    <div class="h-full w-1/3 bg-white shadow-lg shadow-gray-300 p-2 overflow-y-scroll">
-      <div class="flex items-center justify-between">
-        <Heading class="font-medium">Current Order({{ cartStore.getCartItems?.length }})</Heading>
-        <UButton
-            icon="i-heroicons-cursor-arrow-rays"
-            color="primary"
-            size="sm"
-            label="clear"
-            square
-            variant="solid"
-            @click="cartStore.clearCart()"
-        />
+    <div class="h-full w-1/3 bg-white shadow-lg shadow-gray-300 relative">
+      <div>
+        <div class="flex items-center justify-between p-2">
+          <USelectMenu
+              searchable
+              searchable-placeholder="Search a Customer..."
+              v-model="selected"
+              :options="categories"
+              placeholder="Select people"
+              value-attribute="id"
+              option-attribute="name"
+              class="w-4/6"
+              color="primary"
+              size="lg"
+          />
+          <UButton
+              icon="i-heroicons-truck"
+              variant="solid"
+              color="primary"
+              size="lg"
+          />
+        </div>
+        <div class="flex items-center justify-between p-2 shadow">
+          <Heading class="font-medium">Current Order({{ cartStore.getCartItems?.length }})</Heading>
+          <UButton
+              icon="i-heroicons-cursor-arrow-rays"
+              color="primary"
+              size="sm"
+              label="clear"
+              square
+              variant="solid"
+              @click="cartStore.clearCart()"
+          />
+        </div>
       </div>
-      <div class="p-2">
-      <!--  Selected Products     -->
-        <div class="flex gap-3 p-2 rounded shadow shadow-gray-200 w-full" v-for="item in cartStore.getCartItems">
-          <div class="w-1/4">
-            <img :src="item?.image" class="w-full h-20 rounded" alt="">
-          </div>
-          <div class="relative w-3/4">
-            <UButton
-                icon="i-heroicons-trash"
-                size="2xs"
-                color="primary"
-                square
-                variant="solid"
-                class="absolute top-0 right-0"
-                @click="cartStore.removeFromCart(item)"
-            />
-            <h3 class="text-sm mb-1">{{item?.name}}</h3>
-            <div class="flex items-center justify-between mt-3">
-              <div>
-                <p class="font-light text-sm text-gray-500">Price: <span class="text-primary font-bold">{{item?.price}}</span></p>
-                <p class="font-light text-sm text-gray-500">Sub Total: <span class="text-primary font-bold">{{ item?.price * item?.buyQty }}</span></p>
+      <div>
+        <div class="p-2 overflow-y-auto pos-products">
+          <!--  Selected Products     -->
+          <div class="flex gap-3 p-2 rounded shadow shadow-gray-200 w-full" v-for="item in cartStore.getCartItems">
+            <div class="w-1/4">
+              <img v-if="item?.image" :src="item?.image" class="w-full h-20 rounded" alt="">
+              <div v-else class="bg-gray-300 w-full h-20 rounded flex items-center justify-center">
+                <Text class="text-gray-600 text-xl font-semibold">Service</Text>
               </div>
-              <div class="flex items-center gap-1">
-                <UButton
-                    icon="i-heroicons-minus"
-                    size="2xs"
-                    color="primary"
-                    square
-                    variant="outline"
-                />
-                <input type="text" readonly class="w-5 h-6 flex text-center outline-0 border-0 font-normal" :value="item?.buyQty">
-                <UButton
-                    icon="i-heroicons-plus"
-                    size="2xs"
-                    color="primary"
-                    square
-                    variant="outline"
-                />
+            </div>
+            <div class="relative w-3/4">
+              <UButton
+                  icon="i-heroicons-trash"
+                  size="2xs"
+                  color="primary"
+                  square
+                  variant="solid"
+                  class="absolute top-0 right-0"
+                  @click="cartStore.removeFromCart(item)"
+              />
+              <h3 class="text-sm mb-1">{{item?.name}}</h3>
+              <div class="flex items-center justify-between mt-3">
+                <div>
+                  <p class="font-light text-sm text-gray-500">Price: <span class="text-primary font-bold">{{item?.price}}</span></p>
+                  <p class="font-light text-sm text-gray-500">Sub Total: <span class="text-primary font-bold">{{ item?.price * item?.buyQty }}</span></p>
+                </div>
+                <div class="flex items-center gap-1">
+                  <UButton
+                      icon="i-heroicons-minus"
+                      size="2xs"
+                      color="primary"
+                      square
+                      variant="outline"
+                  />
+                  <input type="text" readonly class="w-5 h-6 flex text-center outline-0 border-0 font-normal" :value="item?.buyQty">
+                  <UButton
+                      icon="i-heroicons-plus"
+                      size="2xs"
+                      color="primary"
+                      square
+                      variant="outline"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      <div class="p-4 shadow">
+        <ul class="flex flex-col gap-2">
+          <li class="flex items-center justify-between">
+            <Text>Sub Total</Text>
+            <Text>500</Text>
+          </li>
+          <li class="flex items-center justify-between">
+            <Text>Tax</Text>
+            <Text>500</Text>
+          </li>
+          <li class="flex items-center justify-between">
+            <Text>Shipping</Text>
+            <Text>500</Text>
+          </li>
+          <li class="flex items-center justify-between border-b border-black">
+            <Text>Discount</Text>
+            <Text>500</Text>
+          </li>
 
+          <li class="flex items-center justify-between">
+            <Text class="text-2xl">Total</Text>
+            <Text class="text-2xl">50,00</Text>
+          </li>
+        </ul>
+        <div class="flex items-end justify-between mt-4 gap-4">
+         <div class="flex items-center gap-3">
+           <div class="relative">
+             <UFormGroup v-if="isShipping" class="absolute w-30 -top-10 left-0" label="Shipping">
+               <UInput placeholder="000"  />
+             </UFormGroup>
+             <UButton
+                 label="Shipping"
+                 variant="solid"
+                 @click="isShipping = !isShipping"
+             />
 
-    <div class="fixed left-1/2 -translate-x-1/2 bg-white p-5 pb-10 w-3/4 drop-shadow  drop-shadow-primary-400 border-primary transition-all ease-in-out duration-300"
-        :class="isToggled ? 'bottom-0' : '-bottom-[190px]'"
-
-    >
-      <UButton
-          :icon="isToggled ? 'i-heroicons-chevron-down' : 'i-heroicons-chevron-up'"
-          size="sm"
-          color="primary"
-          square
-          variant="solid"
-          class="absolute -top-4 right-2"
-          @click="isToggled = !isToggled"
-      />
-      <div class="flex items-center justify-between border-b border-gray-400 pb-4">
-        <div class="w-1/3">
-          <div class="flex flex-col gap-3">
-            <USelectMenu
-                searchable
-                searchable-placeholder="Search a Customer..."
-                v-model="selected"
-                :options="categories"
-                placeholder="Select people"
-                value-attribute="id"
-                option-attribute="name"
-                color="primary"
-            />
-            <UInput color="primary" variant="outline" placeholder="Discount" @click="isOpen = true" />
-          </div>
-        </div>
-        <div class="w-1/3 pl-4">
-          <div class="flex items-center justify-between">
-            <p>Item</p>
-            <p class="text-black">10</p>
-          </div>
-          <div class="flex items-center justify-between">
-            <p>Total</p>
-            <p class="text-black">10000৳</p>
-          </div>
-        </div>
-      </div>
-      <div class="flex justify-between pt-4">
-        <div class="flex flex-wrap gap-3">
+           </div>
+           <div class="relative">
+             <UFormGroup v-if="isDiscount" class="absolute w-30 -top-10 left-0" label="Discount">
+               <UInput placeholder="000" />
+             </UFormGroup>
+             <UButton
+                 label="Discount"
+                 variant="solid"
+                 @click="isDiscount= !isShipping"
+             />
+           </div>
+         </div>
           <UButton
-              icon="i-heroicons-pencil-square"
-              size="sm"
-              color="primary"
-              variant="solid"
-              label="Draft"
-              :trailing="false"
-          />
-          <UButton
-              icon="i-heroicons-pencil-square"
-              size="sm"
-              color="sky"
-              variant="solid"
-              label="Quotation"
-              :trailing="false"
-          />
-          <UButton
-            icon="i-heroicons-pause"
-            size="sm"
-            color="indigo"
+            label="Place Order"
             variant="solid"
-            label="Suspend"
-            :trailing="false"
+            @click="isOpen = true"
           />
-          <UButton
-              icon="i-heroicons-credit-card"
-              size="sm"
-              color="fuchsia"
-              variant="solid"
-              label="Card"
-              :trailing="false"
-          />
-          <UButton
-              icon="i-heroicons-banknotes"
-              size="sm"
-              color="orange"
-              variant="solid"
-              label="Cash"
-              :trailing="false"
-          />
-          <UButton
-              icon="i-heroicons-x-mark"
-              size="sm"
-              color="red"
-              variant="solid"
-              label="Cancel"
-              :trailing="false"
-          />
-        </div>
-        <div>
-          <p>Total Payable: <span class="font-bold text-black">10000৳</span></p>
         </div>
       </div>
     </div>
   </div>
 
-  <UModal v-model="isOpen" prevent-close>
+  <UModal v-model="isOpen" prevent-close :ui="{width: 'sm:max-w-4xl'}">
     <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
       <template #header>
         <div class="flex items-center justify-between">
           <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
-            Edit Discount
+            Order Summery
           </h3>
           <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="isOpen = false" />
         </div>
       </template>
+      <div>
 
-      <div class="flex justify-between">
-        <div class="w-1/2 px-1">
-          <label class="mb-2 block">Discount Type: </label>
-          <USelect
+      </div>
+      <template #footer>
+        <div class="flex items-center justify-end gap-5">
+          <UButton
+            label="Close"
+            variant="solid"
+            color="gray"
+
+            />
+          <UButton
+              label="Offline Payment"
+              variant="solid"
               color="primary"
-              variant="outline"
-              :options="['Fixed', 'Parcenteg']"
-              model-value="Fixed"
+
+          />
+          <UButton
+              label="Confirm With Cod"
+              variant="solid"
+
+          />
+          <UButton
+              label="Confirm With Cash"
+              variant="solid"
+
           />
         </div>
-        <div class="w-1/2 px-1">
-          <label  class="mb-2 block">Discount Amount: </label>
-          <UInput color="primary" variant="outline" />
-        </div>
-      </div>
-      <div class="text-end pt-4">
-        <UButton label="save" />
-      </div>
+      </template>
     </UCard>
   </UModal>
-
 </template>
+
+
+<style scoped>
+.pos-products {
+  max-height: calc(100vh - 490px);
+  height: calc(100vh - 490px);
+}
+</style>

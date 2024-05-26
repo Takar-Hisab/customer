@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="sideBar w-64 fixed top-3 left-3 h-[97%] bg-white rounded-xl overflow-y-scroll hidden lg:block">
+  <GlassSection class="sideBar w-64 fixed top-3 left-3 h-[97%]  rounded-xl overflow-y-scroll hidden lg:block">
     <div>
       <h2 class="font-bold text-2xl text-center py-5">Takar Hisab</h2>
     </div>
@@ -11,8 +11,8 @@
       <ul class="flex flex-col gap-3 px-2">
         <!-- Dashboard -->
         <li>
-          <NuxtLink to="/dashboard" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg shadow-primary-400/20 flex items-center justify-center">
+          <NuxtLink to="/dashboard" class="sideBarLink group  flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full glass shadow-lg shadow-primary-400/20 flex items-center justify-center">
               <Icon name="material-symbols:dashboard-outline" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Dashboard</span>
@@ -23,7 +23,7 @@
         <!-- Pos -->
         <li class="hidden lg:block">
           <NuxtLink to="/pos" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg shadow-primary-400/20 flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full glass shadow-lg shadow-primary-400/20 flex items-center justify-center">
               <Icon name="material-symbols:position-bottom-right-outline-rounded" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Pos</span>
@@ -34,7 +34,7 @@
         <!-- Order -->
         <li>
           <NuxtLink to="/order" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg shadow-primary-400/20 flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full glass shadow-lg shadow-primary-400/20 flex items-center justify-center">
               <Icon name="tabler:shopping-bag" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Order</span>
@@ -45,7 +45,7 @@
         <!-- Shop -->
         <li>
           <div class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300 cursor-pointer relative" @click="isShopLinks = !isShopLinks">
-            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg shadow-primary-400/20 flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full glass shadow-lg shadow-primary-400/20 flex items-center justify-center">
               <Icon name="material-symbols:shopping-bag-outline" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Shop</span>
@@ -99,7 +99,7 @@
         <!-- Services -->
         <li>
           <NuxtLink to="/services" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg shadow-primary-400/20 flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full glass shadow-lg shadow-primary-400/20 flex items-center justify-center">
               <Icon name="fluent:people-settings-20-regular" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Services</span>
@@ -110,7 +110,7 @@
         <!-- Customers -->
         <li>
           <NuxtLink to="/customers" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg shadow-primary-400/20 flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full glass shadow-lg shadow-primary-400/20 flex items-center justify-center">
               <Icon name="ci:users-group" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Customers</span>
@@ -121,7 +121,7 @@
         <!-- invoice -->
         <li>
           <NuxtLink to="/invoice" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg shadow-primary-400/20 flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full glass shadow-lg shadow-primary-400/20 flex items-center justify-center">
               <Icon name="teenyicons:invoice-outline" size="21" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Invoice</span>
@@ -132,7 +132,7 @@
         <!-- plans -->
         <li>
           <NuxtLink to="/plans" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg shadow-primary-400/20 flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full glass shadow-lg shadow-primary-400/20 flex items-center justify-center">
               <Icon name="material-symbols-light:rocket-outline" size="28" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Plans</span>
@@ -143,7 +143,7 @@
         <!-- Transactions -->
         <li>
           <NuxtLink to="/transactions" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg shadow-primary-400/20 flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full glass shadow-lg shadow-primary-400/20 flex items-center justify-center">
               <Icon name="uil:transaction" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Transactions</span>
@@ -154,7 +154,7 @@
         <!-- Settings -->
         <li>
           <NuxtLink to="/settings" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
-            <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg shadow-primary-400/20 flex items-center justify-center">
+            <span class="sideBarLink__icon w-12 h-12 rounded-full glass shadow-lg shadow-primary-400/20 flex items-center justify-center">
               <Icon name="fluent:settings-24-regular" size="24" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Settings</span>
@@ -162,7 +162,7 @@
         </li>
         <!-- Settingss End -->
       </ul>
-  </div>
+  </GlassSection>
 </template>
 
 

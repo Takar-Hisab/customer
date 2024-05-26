@@ -118,7 +118,7 @@ onMounted(() => {
     <!--  Back Button End  -->
 
 
-  <div>
+  <div class="lg:pl-5">
     <div class="flex items-center justify-between  pt-4 pb-8">
       <Heading>Services</Heading>
       <div class="flex items-center gap-3">
@@ -145,10 +145,10 @@ onMounted(() => {
     
     <div class="flex flex-wrap lg:-mx-3">
       <div class="w-full lg:w-1/4 lg:px-3 mb-4" v-for="(service, index) in services?.data" :key="index">
-        <div class="bg-white shadow-lg rounded-xl p-6 relative">
+        <GlassCard class="rounded-xl p-6 relative">
           <div class="absolute top-2 right-2">
             <UDropdown :items="items" :popper="{ placement: 'left-start' }" :ui="{'ring' : 'ring-primary'}">
-              <UButton color="primary" variant="soft" trailing-icon="i-heroicons-sparkles" :ui="{'rounded' : 'rounded-full'}" />
+              <UButton color="primary" variant="soft" trailing-icon="i-heroicons-sparkles" :ui="{'rounded' : 'rounded-full'}"  />
               <template #view="{ item }">
                     <UButton
                       icon="i-heroicons-eye"
@@ -187,9 +187,9 @@ onMounted(() => {
               </template>
             </UDropdown>
           </div>
-          <NuxtLink :to='`/services/${service?.id}`' class="mt-2 mb-8 text-lg block">{{service?.name}}</NuxtLink>
-          <span class="bg-primary-50 py-1 px-3 rounded-full inline-block text-primary-900 text-sm">Position: {{service?.position}}</span>
-        </div>
+          <NuxtLink :to='`/services/${service?.id}`' class="mt-2 mb-8 text-lg block text-white">{{service?.name}}</NuxtLink>
+          <span class="glass py-1 px-3 rounded-full inline-block  text-sm">Position: {{service?.position}}</span>
+        </GlassCard>
       </div>
     </div>
   </div>

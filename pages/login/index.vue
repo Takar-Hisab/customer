@@ -1,6 +1,6 @@
 <template>
   <div class="grid place-items-center min-h-screen">
-    <UCard class="w-[30%] p-5 min-h-52 dark:bg-gray-900 dark:border-gray-800 rounded-xl">
+    <GlassCard class="w-[30%] p-5 min-h-52 dark:bg-gray-900 dark:border-gray-800 rounded-xl">
       <div class="flex items-center flex-col mt-10 gap-3">
         <Icon name="i-ion-lock-closed-outline" class="dark:text-white" size="50"/>
         <h1 class="text-4xl dark:text-white font-semibold">Welcome Back</h1>
@@ -9,7 +9,7 @@
       <div class="mt-8">
         <UForm ref="form" :state="state" class="space-y-4" @submit="onSubmit">
           <div  class="mb-8">
-            <label class="dark:text-white font-medium opacity-75 text-xl mb-2">Email</label>
+            <label class="text-white font-medium text-xl mb-2">Email</label>
             <UInput type="email" class="border-none" size="lg"
                     v-model="state.email"
                     inputClass="disabled:bg-primary-100"
@@ -20,7 +20,7 @@
 
           <div>
             <div class="flex items-center justify-between mb-2">
-              <label class="dark:text-white font-medium opacity-75 text-xl">Password</label>
+              <label class="text-white font-medium  text-xl">Password</label>
               <NuxtLink to="#" class="text-primary-500  font-semibold text-lg">Forgot password?</NuxtLink>
             </div>
 
@@ -41,19 +41,19 @@
 
           <div>
             <UButton
-                class="mt-5 text-black text-xl"
+                class="mt-5 text-xl"
                 variant="outline"
                 type="submit"
                 color="gray"
                 size="md" block>
-              <Icon class="text-black" name="i-mdi-github" size="30"/>
+              <Icon class="text-white" name="i-mdi-github" size="30"/>
               Continue with GitHub
             </UButton>
           </div>
           <p class="font-semibold text-lg">By signing in, you agree to our <NuxtLink  class="text-primary-500">Terms of Service.</NuxtLink></p>
         </UForm>
       </div>
-    </UCard>
+    </GlassCard>
   </div>
 </template>
 

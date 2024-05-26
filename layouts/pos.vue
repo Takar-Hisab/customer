@@ -2,6 +2,14 @@
 
 const links = [
   {
+    label: 'Pos',
+    url: '/pos',
+    icon : {
+      name: 'material-symbols:dashboard-outline',
+      size: '20',
+    },
+  },
+  {
     label: 'Dashboard',
     url: '/dashboard',
     icon : {
@@ -28,15 +36,15 @@ const links = [
 ]
 </script>
 <template>
-  <div class="bg-primary w-full h-screen p-4">
-    <main class="bg-gray-100 rounded-xl w-full h-full overflow-hidden">
-      <div class="flex items-center justify-between p-3 border-b bg-white">
+  <div class="w-full h-screen p-4 pos">
+    <GlassSection class="rounded-xl w-full h-full overflow-hidden">
+      <div class="flex items-center justify-between p-3 border-b">
         <p>Welcome, <span>Tushar Imran</span> </p>
 
-        <ul class="flex items-center gap-2">
+        <ul class="flex items-center gap-2 pos-nav">
           <li v-for="(link, i) in links" :key="i">
             <NuxtLink :to="link.url" class="group flex  items-center gap-2  p-2 rounded-lg transition-all ease-in-out duration-300">
-              <Icon :name="link?.icon?.name" :size="link?.icon?.size" class=" transition-all ease-in-out duration-300 group-hover:text-primary" />
+              <Icon :name="link?.icon?.name" :size="link?.icon?.size" class="text-white transition-all ease-in-out duration-300 group-hover:text-primary" />
               <span class="group-hover:text-primary text-md font-normal transition-all ease-in-out duration-300">{{ link.label }}</span>
             </NuxtLink>
           </li>
@@ -51,6 +59,6 @@ const links = [
         />
       </div>
       <slot />
-    </main>
+    </GlassSection>
   </div>
 </template>

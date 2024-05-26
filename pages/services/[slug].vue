@@ -57,7 +57,7 @@ definePageMeta({
       }
   );
 
-//get Pckage
+//get Package
   const { data: service, error, pending, refresh } = useLazyAsyncData(
       'service',
       () => $fetch( `/service/${route.params.slug}`, {
@@ -153,7 +153,7 @@ definePageMeta({
 
   <div class="flex flex-wrap lg:-px-3">
     <div class="w-full lg:w-1/3 mb-5 lg:px-3" v-for="data in service?.packages?.data">
-      <div class="bg-white  rounded-xl  shadow-md shadow-gray-200 border border-primary-300 p-4  text-center relative">
+      <GlassCard class="rounded-xl  p-4  text-center relative">
         <div class="absolute top-2 right-2">
             <UDropdown :items="items" :popper="{ placement: 'left-start' }" :ui="{'ring' : 'ring-primary'}">
               <UButton color="primary" variant="soft" trailing-icon="i-heroicons-sparkles" :ui="{'rounded' : 'rounded-full'}" />
@@ -189,7 +189,7 @@ definePageMeta({
           {{data?.description}}
         </p>
         <Text>Position: {{ data?.position}}</Text>
-      </div>
+      </GlassCard>
     </div>
   </div>
 

@@ -18,80 +18,97 @@ onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
 });
 
-  const methods = [{
-    id: 'benjamincanac',
-    label: 'Bkash',
-    target: '_blank',
-    avatar: { src: 'https://www.logodee.com/wp-content/uploads/2021/10/25.jpg' }
-  }, {
-    id: 'Atinux',
-    label: 'Paypal',
-    href: 'https://github.com/Atinux',
-    target: '_blank',
-    avatar: { src: 'https://cdn.pixabay.com/photo/2018/05/08/21/29/paypal-3384015_1280.png' }
-  }, {
-    id: 'smarroufin',
-    label: 'Nagad',
-    target: '_blank',
-    avatar: { src: 'https://freelogopng.com/images/all_img/1679248787Nagad-Logo.png' }
-  },]
+//get Customer
+const { data: customers, refresh: customerRefresh } = useLazyAsyncData(
+    'service',
+    () => $fetch( `/customers`, {
+      method: 'GET',
+      baseURL: useRuntimeConfig().public.baseUrl,
+      headers: {
+        authorization: `Bearer ${useTokenStore().customer_token}`
+      }
+    }));
+
+//get Services
+const { data: services, refresh: serviceRefresh } = useLazyAsyncData(
+    'service',
+    () => $fetch( `/customers`, {
+      method: 'GET',
+      baseURL: useRuntimeConfig().public.baseUrl,
+      headers: {
+        authorization: `Bearer ${useTokenStore().customer_token}`
+      }
+    }));
 
 
-  const selectedMethod = ref('Select Payment method')
+const selectedMethod = ref('Select Payment method')
 
 
-const people = [{
-  id: 'benjamincanac',
-  label: 'benjamincanac',
-  href: 'https://github.com/benjamincanac',
-  target: '_blank',
-  avatar: { src: 'https://avatars.githubusercontent.com/u/739984?v=4' }
-}, {
-  id: 'Atinux',
-  label: 'Atinux',
-  href: 'https://github.com/Atinux',
-  target: '_blank',
-  avatar: { src: 'https://avatars.githubusercontent.com/u/904724?v=4' }
-}, {
-  id: 'smarroufin',
-  label: 'smarroufin',
-  href: 'https://github.com/smarroufin',
-  target: '_blank',
-  avatar: { src: 'https://avatars.githubusercontent.com/u/7547335?v=4' }
-}, {
-  id: 'nobody',
-  label: 'Nobody',
-  icon: 'i-heroicons-user-circle'
-}]
-
-const selected = ref(people[0])
+// const selected = ref(people[0])
 
 
-  const invoiceData = ref({
-    totalPrice:0,
-    items: [{
-        description:null,
-        price:null,
-      }]
-  })
+
+const state = reactive({
+  total_amount: undefined,
+  discount:undefined,
+  grand_total: undefined,
+  qty: undefined,
+  pay: undefined,
+  note: undefined,
+  invoice_date: undefined,
+  due_date: undefined,
+  currency: undefined,
+  trams_of_service: undefined,
+  payment_policy: undefined,
+  payment_methods: undefined,
+  items: [{
+    description:undefined,
+    price:undefined,
+  }],
+});
 
   const addItem = () => {
-    invoiceData.value.items.push({
+    state.items.push({
       description: null,
       price: null,
     })
   }
-const removeItem = (index :number) => invoiceData.value.items.splice(index, 1);
+const removeItem = (index :number) => state.items.splice(index, 1);
 
 
 const totalPrice = computed(()=>{
   let totalPrice = 0;
-  invoiceData.value.items.map(item =>{
+  state.items.map(item =>{
     totalPrice = totalPrice + item.price;
   })
-  invoiceData.value.totalPrice = totalPrice;
+  state.totalPrice = totalPrice;
   return totalPrice;
 })
+
+const onSubmit = async () => {
+  await execute();
+  if(data.value){
+    toast.add({ title: "Data Save Successfully Done..." });
+  }
+  if(error.value){
+    toast.add({ title:error.value.data.message, color:"red" })
+  }
+};
+const {data, status, execute} = useAsyncData(
+    async () => {
+      return await $fetch(`/invoice`, {
+        baseURL: useRuntimeConfig().public?.baseUrl,
+        method: "POST",
+        body:state,
+        headers: {
+          authorization: `Bearer ${useTokenStore().customer_token}`
+        }
+      });
+    },
+    {
+      immediate: false,
+    }
+);
 
   const terms = ref(false);
   const notes = ref(false);
@@ -111,8 +128,14 @@ const totalPrice = computed(()=>{
       value: 'parcenteg',
     }
   ]
+
   const discountType= ref('fixed');
   const discountAmount=ref(0);
+
+  onMounted(() => {
+    customerRefresh();
+    serviceRefresh();
+  })
 </script>
 <template>
   <!-- BreadCrumb -->
@@ -126,7 +149,7 @@ const totalPrice = computed(()=>{
   <!--  Back Button End  -->
 
   <!-- Invoice SideBar -->
-  <div class="fixed h-[80vh] w-72 bg-white rounded-xl shadow-lg right-5 bottom-5  p-3 flex flex-col gap-5 overflow-y-scroll transition-all ease-in-out duration-500 " :class="{'h-[95vh]' : isScrolled}">
+  <GlassSection class="fixed h-[80vh] w-72 rounded-xl right-5 bottom-5  p-3 flex flex-col gap-5 overflow-y-scroll transition-all ease-in-out duration-500 " :class="{'h-[95vh]' : isScrolled}">
     <span class="absolute top-0 left-0 right-0 w-full h-5 bg-primary"></span>
     <span class="absolute top-2 left-0 right-0 w-full/ h-5 bg-white z-10 rounded-t-3xl"></span>
 
@@ -157,16 +180,17 @@ const totalPrice = computed(()=>{
           label="Save"
           :trailing="false"
           block
+          @click="onSubmit"
       />
     </div>
 
     <div>
       <p class="mb-2">Accept Payment Via</p>
-      <USelectMenu v-model="selectedMethod" :options="methods" size="lg" color="primary">
-        <template #leading>
-          <img v-if="selectedMethod.avatar" :src="selectedMethod.avatar.src" alt="" class="w-6 h-6 rounded-full">
-        </template>
-      </USelectMenu>
+<!--      <USelectMenu v-model="state.payment_methods" :options="methods" size="lg" color="primary">-->
+<!--        <template #leading>-->
+<!--&lt;!&ndash;          <img v-if="selectedMethod.avatar" :src="selectedMethod.avatar.src" alt="" class="w-6 h-6 rounded-full">&ndash;&gt;-->
+<!--        </template>-->
+<!--      </USelectMenu>-->
     </div>
 
     <div class="py-5">
@@ -176,7 +200,7 @@ const totalPrice = computed(()=>{
           <UToggle
               on-icon="i-heroicons-check-20-solid"
               off-icon="i-heroicons-x-mark-20-solid"
-              v-model="terms"
+              v-model="state.payment_policy"
               size="lg"
           />
         </li>
@@ -201,16 +225,16 @@ const totalPrice = computed(()=>{
 
       </ul>
     </div>
-  </div>
+  </GlassSection>
   <!-- Invoice SideBar End -->
 
 
   <!-- Template Wrapper -->
-  <div class="mr-80">
+  <div class="mr-80 pl-5">
     <!-- Template -->
-    <div class="p-10 rounded-lg shadow-lg bg-white">
+    <div class="p-10 rounded-lg bg-clip-padding  bg-opacity-40 border border-gray-100">
       <!-- Template Header -->
-      <header class="flex items-center justify-between bg-gray-100 rounded-xl p-5">
+      <header class="bg-gray-50/20 border border-gray-100 flex items-center justify-between rounded-xl p-5">
         <div class="max-w-xs">
           <p class="italic font-medium text-3xl text-primary mb-4">Takar Hisab</p>
           <p>The Imperial Irish Kingdom, Mo-03 (3rd Floor), Merul Badda, Dhaka 1212</p>
@@ -258,9 +282,9 @@ const totalPrice = computed(()=>{
             <div>
               <div>
                 <p class="mb-3">Invoice To:</p>
-                <USelectMenu v-model="selected" :options="people" size="lg" color="primary">
-                  <template #leading>
-                    <UAvatar  v-bind="(selected.avatar as Avatar)" size="2xs" />
+                <USelectMenu v-model="selected" :options="customers?.data" search="true" size="lg" color="primary">
+                  <template #option="{ option: customer }">
+                    <p class="text-black">{{customer?.user?.name}}</p>
                   </template>
                 </USelectMenu>
               </div>
@@ -273,7 +297,7 @@ const totalPrice = computed(()=>{
           </div>
         </div>
 
-        <div class="mb-5"  v-for="(item, index) in invoiceData.items">
+        <div class="mb-5"  v-for="(item, index) in state?.items">
           <div class="flex items-center mb-2">
             <p class="w-4/5">Item</p>
             <p class="w-1/5">Price</p>
@@ -282,7 +306,7 @@ const totalPrice = computed(()=>{
             <div class="w-4/5 pr-2">
              <div class="flex mb-3">
                <div class="w-1/2 pr-2">
-                 <USelectMenu  size="lg" color="primary" placeholder="Select Service" />
+                 <USelectMenu  size="lg" color="primary" placeholder="Select Service" :options="services.data" />
                </div>
                <div  class="w-1/2 pl-2">
                  <USelectMenu  size="lg" color="primary" placeholder="Select Package" />
@@ -293,7 +317,8 @@ const totalPrice = computed(()=>{
                   color="primary"
                   variant="outline"
                   placeholder="Custom"
-                  v-model="invoiceData.items[index].description"
+                  class="placeholder-gray-50"
+                  v-model="state.items[index].description"
               />
             </div>
             <div class="w-1/5 pl-2 flex flex-col gap-3">
@@ -303,7 +328,7 @@ const totalPrice = computed(()=>{
                   variant="outline"
                   placeholder="Price"
                   size="lg"
-                  v-model="invoiceData.items[index].price"
+                  v-model="state.items[index].price"
               />
               <UButton
                   icon="i-heroicons-pencil-square"
@@ -335,11 +360,11 @@ const totalPrice = computed(()=>{
         <div class="flex justify-between my-8 border-y py-6">
           <div class="flex items-center gap-4">
             <p class="mb-3">Salesperson</p>
-            <USelectMenu v-model="selected" :options="people" size="lg" color="primary">
-              <template #leading>
-                <UAvatar  v-bind="(selected.avatar as Avatar)" size="2xs" />
-              </template>
-            </USelectMenu>
+<!--            <USelectMenu v-model="selected" :options="" size="lg" color="primary">-->
+<!--              <template #leading>-->
+<!--                <UAvatar  v-bind="(selected.avatar as Avatar)" size="2xs" />-->
+<!--              </template>-->
+<!--            </USelectMenu>-->
           </div>
           <div class="w-60 flex flex-col gap-3">
             <div class="flex items-center justify-between">
@@ -388,11 +413,10 @@ const totalPrice = computed(()=>{
 
       </main>
       <!--  Template Main End -->
-
       <footer>
         <div>
           <p class="mb-2">Note</p>
-          <UTextarea :rows="4" placeholder="Write Note ere.." />
+          <UTextarea :rows="4" placeholder="Write Note ere.." color="primary" />
         </div>
       </footer>
     </div>

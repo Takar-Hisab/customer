@@ -16,7 +16,7 @@ export default {
         labels: ['Used - 50 GB', 'Free 5 GB'],
         datasets: [
           {
-            backgroundColor: ['#00C16A', '#f2f2f2'],
+            backgroundColor: ['#f21010', '#f2f2f2'],
             data: [80, 20]
           }
         ]

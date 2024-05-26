@@ -113,10 +113,10 @@ onMounted(() => {
     <!--  Back Button End  -->
 
     <!-- Categories -->
-    <div>
-        <div class="p-4 bg-white rounded-xl shadow-lg">
+    <div class="lg:pl-5">
+        <GlassSection class="rounded-xl">
         <UCard
-        class="w-full"
+        class="w-full bg-transparent"
         :ui="{
         base: '',
         ring: '',
@@ -260,7 +260,7 @@ onMounted(() => {
         </div>
         </template>
     </UCard>
-        </div>
+        </GlassSection>
     </div>
     <!-- Categories End -->
 

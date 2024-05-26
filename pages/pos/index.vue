@@ -79,15 +79,30 @@ onMounted(() => {
   <div class="w-full h-full flex">
     <!-- Products And Services -->
     <div class="w-2/3 overflow-y-scroll pb-10">
-      <UTabs :items="items" class="w-full">
+      <UTabs :items="items" class="w-full"
+        :ui="{
+         list: {
+            background: 'bg-transparent',
+            marker: {
+              background: 'bg-gray-50/20 border border-gray-100'
+            }
+          }
+        }"
+      >
         <template #item="{ item }">
-          <UCard class="bg-transparent" :ui="{shadow: 'shadow-none', ring: 'ring-0'}">
+          <UCard class="bg-transparent"
+                 :ui="{
+                shadow: 'shadow-none',
+                ring: 'ring-0',
+
+          }"
+          >
             <div v-if="item.key === 'products'">
               <header class="flex items-center justify-between">
                 <div>
                   <UInput
                       icon="i-heroicons-magnifying-glass-20-solid"
-                      size="md"
+                      size="lg"
                       color="primary"
                       :trailing="false"
                       placeholder="Enter Product Name / SKU / Scan bar code"
@@ -102,12 +117,15 @@ onMounted(() => {
                       placeholder="Select people"
                       value-attribute="id"
                       option-attribute="name"
+                      color="primary"
+                      class="w-48"
+                      size="lg"
                   />
                 </div>
               </header>
               <div class="flex flex-wrap py-4">
                   <div class="w-1/4 p-1" v-for="product in products?.data">
-                    <div @click="addedToCart(product)" class="bg-white shadow rounded-lg overflow-hidden relative group cursor-pointer">
+                    <GlassCard @click="addedToCart(product)" class="rounded-lg overflow-hidden relative group cursor-pointer">
                       <span class="group-hover:opacity-100 opacity-0 absolute top-0 right-0 bottom-0 left-0 w-full h-full bg-primary-500/20 flex items-center justify-center transition-all ease-in-out duration-300">
                         <UIcon name="i-heroicons-plus-circle" class="text-4xl text-primary group-hover:mt-0 mt-10 group-hover:opacity-100 opacity-0 transition-all ease-in-out duration-500" />
                       </span>
@@ -120,7 +138,7 @@ onMounted(() => {
                         <h4>{{product?.name}}</h4>
                         <Text class="text-primary">{{product?.price}}</Text>
                       </div>
-                    </div>
+                    </GlassCard>
                   </div>
                 </div>
             </div>
@@ -142,16 +160,16 @@ onMounted(() => {
                   <Heading class="pt-4">Services</Heading>
                     <ul class="flex flex-col py-4 gap-1">
                       <li v-for="(service, i) in services?.data">
-                        <lable @click="packages = service" :class="{'bg-primary text-white' :  packages?.id === service?.id,  'bg-white text-black' :  packages?.id !== service?.id }" class=" block px-4 py-2 cursor-pointer hover:bg-primary hover:text-white">{{service?.name}}</lable>
+                        <lable @click="packages = service" :class="{'bg-primary text-white' :  packages?.id === service?.id,  'glass text-white' :  packages?.id !== service?.id }" class=" block px-4 py-2 cursor-pointer hover:bg-primary hover:text-white">{{service?.name}}</lable>
                       </li>
                     </ul>
                 </div>
                 <div class="w-3/4">
-                  <Text v-if="packages == null" class="text-6xl font-bold text-primary-300/50 text-center pt-10">Select A Service</Text>
+                  <Text v-if="packages == null" class="text-6xl font-bold text-gray-50/50 text-center pt-10">Select A Service</Text>
                   <Text v-else-if="packages?.packages?.data == 0"  class="text-2xl font-bold text-primary-500 text-center pt-20">There is no package for service {{packages?.name}}!</Text>
                   <div v-else class="flex flex-wrap py-4">
                     <div class="w-1/2 p-2" v-for="item in packages?.packages?.data">
-                      <div @click="addedToCart(item)"  class="overflow-hidden group bg-white rounded-xl  shadow-md shadow-gray-200 border border-primary-300 p-4  text-center relative cursor-pointer">
+                      <GlassCard @click="addedToCart(item)"  class="overflow-hidden group rounded-xl p-4  text-center relative cursor-pointer">
                         <span class="group-hover:opacity-100 opacity-0 absolute top-0 right-0 bottom-0 left-0 w-full h-full bg-primary-500/20 flex items-center justify-center transition-all ease-in-out duration-300">
                           <UIcon name="i-heroicons-plus-circle" class="text-4xl text-primary group-hover:mt-0 mt-10 group-hover:opacity-100 opacity-0  transition-all ease-in-out duration-500" />
                         </span>
@@ -161,7 +179,7 @@ onMounted(() => {
                           {{item?.description}}
                         </Text>
                         <Text>Position: {{item?.position}}</Text>
-                      </div>
+                      </GlassCard>
                     </div>
                   </div>
                 </div>
@@ -175,7 +193,7 @@ onMounted(() => {
       </div>
     </div>
       <!--    Side Bar-->
-    <div class="h-full w-1/3 bg-white shadow-lg shadow-gray-300 relative">
+    <GlassSection class="h-full w-1/3 relative">
       <div>
         <div class="flex items-center justify-between p-2">
           <USelectMenu
@@ -213,7 +231,7 @@ onMounted(() => {
       <div>
         <div class="p-2 overflow-y-auto pos-products">
           <!--  Selected Products     -->
-          <div class="flex gap-3 p-2 rounded shadow shadow-gray-200 w-full" v-for="item in cartStore.getCartItems">
+          <GlassCard class="bg-gray-50/20 flex gap-3 p-2 rounded w-full mb-2" v-for="item in cartStore.getCartItems">
             <div class="w-1/4">
               <img v-if="item?.image" :src="item?.image" class="w-full h-20 rounded" alt="">
               <div v-else class="bg-gray-300 w-full h-20 rounded flex items-center justify-center">
@@ -233,8 +251,8 @@ onMounted(() => {
               <h3 class="text-sm mb-1">{{item?.name}}</h3>
               <div class="flex items-center justify-between mt-3">
                 <div>
-                  <p class="font-light text-sm text-gray-500">Price: <span class="text-primary font-bold">{{item?.price}}</span></p>
-                  <p class="font-light text-sm text-gray-500">Sub Total: <span class="text-primary font-bold">{{ item?.price * item?.buyQty }}</span></p>
+                  <p class="font-light text-sm text-white">Price: <span class="text-primary font-bold">{{item?.price}}</span></p>
+                  <p class="font-light text-sm text-white">Sub Total: <span class="text-primary font-bold">{{ item?.price * item?.buyQty }}</span></p>
                 </div>
                 <div class="flex items-center gap-1">
                   <UButton
@@ -244,7 +262,7 @@ onMounted(() => {
                       square
                       variant="outline"
                   />
-                  <input type="text" readonly class="w-5 h-6 flex text-center outline-0 border-0 font-normal" :value="item?.buyQty">
+                  <input type="text" readonly class="w-5 h-6 flex text-center outline-0 border-0 font-normal bg-transparent text-white" :value="item?.buyQty">
                   <UButton
                       icon="i-heroicons-plus"
                       size="2xs"
@@ -255,7 +273,7 @@ onMounted(() => {
                 </div>
               </div>
             </div>
-          </div>
+          </GlassCard>
         </div>
       </div>
       <div class="p-4 shadow">
@@ -272,7 +290,7 @@ onMounted(() => {
             <Text>Shipping</Text>
             <Text>500</Text>
           </li>
-          <li class="flex items-center justify-between border-b border-black">
+          <li class="flex items-center justify-between border-b border-white">
             <Text>Discount</Text>
             <Text>500</Text>
           </li>
@@ -313,7 +331,7 @@ onMounted(() => {
           />
         </div>
       </div>
-    </div>
+    </GlassSection>
   </div>
 
   <UModal v-model="isOpen" prevent-close :ui="{width: 'sm:max-w-4xl'}">

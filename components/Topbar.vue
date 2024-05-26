@@ -40,12 +40,12 @@ const notifications = [
 
 <template>
   <div class="topBar  items-center justify-end gap-3 hidden lg:flex">
-    <div class="bg-white shadow-lg  rounded-full flex items-center justify-center px-3 py-2 shadow-gray-200 gap-2 border border-primary">
-      <Icon  name="i-heroicons-calendar-days" />
+    <div class="glass  rounded-full flex items-center justify-center px-3 py-2 shadow-gray-200 gap-2 border border-primary">
+      <Icon  name="i-heroicons-calendar-days" color="white" />
       <span>{{ format(date, 'd MMM, yyy') }}</span>
     </div>
     <UDropdown :items="notifications" :ui="{ item: { disabled: 'cursor-text select-text' }, width:'w-80', height:'min-h-96',padding:'p-3', ring:'ring-primary', shadow:'shadow-primary-500/10'  }" :popper="{offsetDistance: 16, placement: 'bottom-start' }">
-       <div class="bg-white shadow-lg  rounded-full flex items-center justify-center px-3 py-2 shadow-gray-200 gap-2 w-12 h-12 border border-primary">
+       <div class="glass rounded-full flex items-center justify-center px-3 py-2 shadow-gray-200 gap-2 w-12 h-12 border border-primary">
          <UIcon name="i-heroicons-bell" class="text-xl" />
        </div>
 

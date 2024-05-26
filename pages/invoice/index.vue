@@ -165,10 +165,10 @@ const isInvoicePreview = () => {
     <!--  Back Button End  -->
 
     <!-- Invoce List -->
-    <div>
-        <div class="p-4 bg-white rounded-xl shadow-lg">
+    <div class="pl-5">
+        <GlassSection class="rounded-xl ">
         <UCard
-        class="w-full"
+        class="w-full bg-transparent"
         :ui="{
         base: '',
         ring: '',
@@ -254,6 +254,7 @@ const isInvoicePreview = () => {
             <template #status-data="{ row }">
               <UPopover mode="hover" :popper="{ placement: 'top-end' }">
                 <UButton
+                    class="glass"
                   color="primary" variant="soft"
                   icon="i-heroicons-check"
                   :ui="{'rounded' : 'rounded-full'}"
@@ -274,6 +275,7 @@ const isInvoicePreview = () => {
             <template #action-data="{ row }">
                 <div class="flex items-center gap-3">
                     <UButton
+                        class="glass"
                         icon="i-heroicons-trash"
                         size="sm"
                         color="primary"
@@ -281,6 +283,7 @@ const isInvoicePreview = () => {
                         variant="soft"
                     />
                     <UButton
+                        class="glass"
                         icon="i-heroicons-eye"
                         size="sm"
                         color="primary"
@@ -289,7 +292,7 @@ const isInvoicePreview = () => {
                         @click="isInvoicePreview"
                     />
                     <UDropdown :items="items" :ui="{'ring' : 'ring-primary'}" :popper="{ placement: 'bottom-start' }">
-                      <UButton color="primary" trailing-icon="i-heroicons-sparkles" variant="soft" />
+                      <UButton color="primary" trailing-icon="i-heroicons-sparkles" variant="soft" class="glass" />
                     </UDropdown>
                 </div>
             </template>
@@ -328,7 +331,7 @@ const isInvoicePreview = () => {
             </div>
             </template>
         </UCard>
-        </div>
+        </GlassSection>
     </div>
     <!-- Invoice List End -->
 

@@ -131,10 +131,10 @@ const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.v
     <!--  Back Button End  -->
 
     <!-- Brand -->
-    <div>
-        <div class="p-4 bg-white rounded-xl shadow-lg">
+    <div class="lg:pl-5">
+        <GlassSection class="rounded-xl">
         <UCard
-        class="w-full"
+        class="w-full bg-transparent"
         :ui="{
         base: '',
         ring: '',
@@ -165,7 +165,7 @@ const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.v
 
         <!-- Filters -->
         <div class="flex items-center justify-between gap-3 px-4 py-3">
-        <UInput v-model="search" icon="i-heroicons-magnifying-glass-20-solid" placeholder="Search..." />
+        <UInput v-model="search" icon="i-heroicons-magnifying-glass-20-solid" color="primary" placeholder="Search..." />
         </div>
 
         <!-- Header and Action buttons -->
@@ -216,7 +216,7 @@ const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.v
             :sort-button="{ icon: 'i-heroicons-sparkles-20-solid', color: 'primary', variant: 'outline', size: '2xs', square: false, ui: { rounded: 'rounded-full' } }"
             sort-mode="manual"
             class="w-full"
-            :ui="{ td: { base: 'max-w-[0] truncate' }, default: { checkbox: { color: 'gray' } } }"
+            :ui="{ tr:'hover:bg-gray-50/30' , td: { base: 'max-w-[0] truncate' }, default: { checkbox: { color: 'gray' } } }"
             @select="select"
             >
             <template #completed-data="{ row }">
@@ -229,17 +229,17 @@ const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.v
                     <UButton
                         icon="i-heroicons-pencil-square"
                         size="sm"
-                        color="primary"
+                        color="gray"
                         square
-                        variant="soft"
+                        variant="outline"
                         @click="editBrand(row)"
                     />
                     <UButton
                         icon="i-heroicons-trash"
                         size="sm"
-                        color="primary"
+                        color="gray"
                         square
-                        variant="soft"
+                        variant="outline"
                         @click="deleteBrand(row?.id)"
                     />
                 </div>
@@ -278,7 +278,7 @@ const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.v
             </div>
             </template>
         </UCard>
-        </div>
+        </GlassSection>
     </div>
     <!-- Brand End -->
 

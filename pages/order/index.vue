@@ -132,9 +132,10 @@ onMounted(() => {
 
   <!-- Customer Table -->
   <div>
-    <div class="p-4 bg-white rounded-xl shadow-lg">
+    <GlassSection class="rounded-xl">
       <UCard
-          class="w-full"
+          class="w-full bg-transparent"
+
           :ui="{
       base: '',
       ring: '',
@@ -316,7 +317,7 @@ onMounted(() => {
           </div>
         </template>
       </UCard>
-    </div>
+    </GlassSection>
   </div>
 </template>
 <script setup lang="ts">

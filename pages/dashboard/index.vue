@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import GlassSection from "~/components/GlassSection.vue";
+
 definePageMeta({
   middleware: ['auth']
 })
@@ -101,11 +103,11 @@ const selected = ref([])
       <UBreadcrumb :links="links" />
     </div>
     <!-- Widgets -->
-    <div class="flex p-2 lg:p-4 rounded-lg lg:rounded-2xl shadow-lg  ">
+    <div class="flex p-2 lg:p-4 ">
       <div class="w-2/3 pr-4">
-        <div class=" w-full flex flex-wrap items-center bg-primary lg:bg-white w-full overflow-y-scroll">
+        <div class=" w-full flex flex-wrap items-center w-full overflow-y-scroll">
           <div class="w-1/2 lg:w-1/4 px-2 lg:pl-0 mb-2 lg:mb-0">
-            <div class="group bg-primary rounded-2xl p-2 lg:p-5 relative overflow-hidden w-full h-48 flex flex-col justify-between">
+            <GlassCard class="group rounded-2xl p-2 lg:p-5 relative overflow-hidden w-full h-48 flex flex-col justify-between">
               <div class="absolute  -top-16 -left-16 -rotate-45 group-hover:-rotate-[50deg] group-hover:scale-125 transition-all ease-in-out duration-500">
                 <Icon name="mdi:cash-check" size="220" class="text-gray-100/20" />
               </div>
@@ -113,10 +115,10 @@ const selected = ref([])
               <div>
                 <h4 class="text-end text-white text-lg lg:text-4xl font-bold">$8000</h4>
               </div>
-            </div>
+            </GlassCard>
           </div>
           <div class="w-1/2 lg:w-1/4 px-2 lg:pl-0 mb-2 lg:mb-0">
-            <div class="group bg-primary rounded-2xl p-2 lg:p-5 relative overflow-hidden w-full h-48 flex flex-col justify-between">
+            <GlassCard class="group rounded-2xl p-2 lg:p-5 relative overflow-hidden w-full h-48 flex flex-col justify-between">
               <div class="absolute -rotate-45 -top-16 -left-16 -rotate-45 group-hover:-rotate-[50deg] group-hover:scale-125 transition-all ease-in-out duration-500">
                 <Icon name="carbon:ibm-data-product-exchange" size="220" class="text-gray-100/20" />
               </div>
@@ -124,10 +126,10 @@ const selected = ref([])
               <div>
                 <h4 class="text-end text-white text-lg lg:text-4xl font-bold">112</h4>
               </div>
-            </div>
+            </GlassCard>
           </div>
           <div class="w-1/2 lg:w-1/4 px-2 lg:pl-0 mb-2 lg:mb-0">
-            <div class="group bg-primary rounded-2xl p-2 lg:p-5 relative overflow-hidden w-full h-48 flex flex-col justify-between">
+            <GlassCard class="group rounded-2xl p-2 lg:p-5 relative overflow-hidden w-full h-48 flex flex-col justify-between">
               <div class="absolute -rotate-45 -top-16 -left-16 -rotate-45 group-hover:-rotate-[50deg] group-hover:scale-125 transition-all ease-in-out duration-500">
                 <Icon name="material-symbols:settings-suggest-outline-rounded" size="220" class="text-gray-100/20" />
               </div>
@@ -135,10 +137,10 @@ const selected = ref([])
               <div>
                 <h4 class="text-end text-white text-lg lg:text-4xl font-bold">25</h4>
               </div>
-            </div>
+            </GlassCard>
           </div>
           <div class="w-1/2 lg:w-1/4 px-2 lg:pl-0 mb-2 lg:mb-0">
-            <div class="group bg-primary rounded-2xl p-2 lg:p-5 relative overflow-hidden w-full h-48 flex flex-col justify-between">
+            <GlassCard class="group  rounded-2xl p-2 lg:p-5 relative overflow-hidden w-full h-48 flex flex-col justify-between">
               <div class="absolute -rotate-45 -top-16 -left-16 -rotate-45 group-hover:-rotate-[50deg] group-hover:scale-125 transition-all ease-in-out duration-500">
                 <Icon name="material-symbols-light:remove-shopping-cart-rounded" size="220" class="text-gray-100/20" />
               </div>
@@ -146,14 +148,14 @@ const selected = ref([])
               <div>
                 <h4 class="text-end text-white text-lg lg:text-4xl font-bold">25</h4>
               </div>
-            </div>
+            </GlassCard>
           </div>
         </div>
       </div>
       <div class="w-1/3 pl-4">
         <div>
         <!--    Card      -->
-          <div class="bg-primary w-full p-5 rounded-2xl h-48 flex flex-col justify-between relative overflow-hidden">
+          <GlassCard class="w-full p-5 rounded-2xl h-48 flex flex-col justify-between relative overflow-hidden">
             <!--    Vector      -->
             <span class="absolute w-11/12 h-full  bg-primary-400 rounded-2xl -rotate-[30deg] -bottom-32 -right-10 z-10"></span>
             <span class="absolute w-11/12 h-full bg-primary-400/30 rounded-2xl  -left-10 rotate-[30deg] -bottom-40 "></span>
@@ -173,7 +175,7 @@ const selected = ref([])
                 <span class="w-8 h-8 rounded-full bg-gray-100/50 block -ml-4"></span>
               </div>
             </div>
-          </div>
+          </GlassCard>
           <!--    Card End     -->
           <div class="flex items-center justify-end gap-5 pt-4">
             <UButton
@@ -200,14 +202,16 @@ const selected = ref([])
 
     <div class="flex flex-wrap py-8">
       <div class="w-full lg:w-1/3 lg:pr-3 mb-5 lg:mb-0">
-        <div class="p-5 rounded-2xl bg-white shadow-lg w-full">
+        <GlassCard class="p-5 rounded-2xl   w-full">
           <Heading class="mb-4">Storage Status</Heading>
           <DoughnutChart />
-        </div>
+        </GlassCard>
       </div>
       <div class="w-full lg:w-2/3 lg:pl-3 mb-5">
-        <div class="bg-white p-5 rounded-2xl shadow-lg">
-          <Heading>Top Products</Heading>
+        <GlassSection class="rounded-2xl shadow-lg">
+          <header class="p-5 pb-2">
+            <Heading>Top Products</Heading>
+          </header>
           <UTable
               v-model="selected"
               :rows="products"
@@ -230,24 +234,20 @@ const selected = ref([])
               <UBadge>4 Sold</UBadge>
             </template>
           </UTable>
-        </div>
+        </GlassSection>
       </div>
     </div>
 
     <!-- Chart -->
-    <div class="p-4 rounded-xl bg-white shadow-lg mt-5 mb-10">
+    <GlassSection class="p-4 rounded-xl mt-5 mb-10">
       <BarChart />
-    </div>
-    <!-- Top products -->
-    <div class="flex my-5">
-      <div class="w-1/2 pl-2">
-
-      </div>
-    </div>
+    </GlassSection>
 
     <!-- Recent Order  -->
-    <div class="bg-white p-5 rounded-2xl shadow-lg">
-      <Heading>Recent Order</Heading>
+    <GlassSection class="p-5 rounded-2xl">
+      <header class="p-5 pb-2">
+        <Heading>Recent Order</Heading>
+      </header>
       <UTable
           v-model="selected"
           :rows="products"
@@ -274,10 +274,11 @@ const selected = ref([])
             <UButton
                 icon="i-heroicons-eye"
                 variant="soft"
+                color="gray"
             />
           </UTooltip>
         </template>
       </UTable>
-    </div>
+    </GlassSection>
   </div>
 </template>

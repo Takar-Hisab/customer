@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="flex lg:gap-5">
+  <div class="flex lg:gap-5 app">
     <Sidebar  />
     <div class="w-full lg:ml-64 p-5">
       <Topbar />

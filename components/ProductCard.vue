@@ -5,7 +5,7 @@
 </script>
 <template>
     <div class="h-full">
-        <div class="flex flex-col bg-white rounded-xl p-2 shadow-lg">
+        <GlassCard class="flex flex-col rounded-xl p-2">
             <NuxtLink :to="`/shop/products/${data?.sku}`"  class="w-full h-40 block">
                 <img v-if="data?.image" class="w-full h-full rounded-xl" :src="data?.image">
                 <div v-else class="w-full h-full bg-gray-300 flex items-center justify-center rounded-xl">
@@ -20,15 +20,15 @@
                   <div class="flex flex-col gap-2">
                     <div class="flex items-center gap-2">
                       <span class="text-sm">Price : </span>
-                      <span class="text-sm text-black">{{data?.price}}</span>
+                      <span class="text-sm text-primary">{{data?.price}}</span>
                     </div>
                     <div class="flex items-center gap-2">
                       <span class="text-sm">SKU : </span>
-                      <span class="text-sm text-black">{{data?.sku}}</span>
+                      <span class="text-sm text-primary">{{data?.sku}}</span>
                     </div>
                     <div class="flex items-center gap-2">
                       <span class="text-sm">BARCODE : </span>
-                      <span class="text-sm text-black">{{data?.bar_code}}</span>
+                      <span class="text-sm text-primary">{{data?.bar_code}}</span>
                     </div>
                   </div>
                 </div>
@@ -36,7 +36,7 @@
                 <div class="flex items-center justify-between gap-3">
                     <div class="flex items-center gap-1">
                       <span class="w-2 h-2 rounded-full bg-primary block"></span>
-                      <p class="text-gray-600 text-sm">In Stock</p>
+                      <p class="text-white text-sm">In Stock</p>
                     </div>
                     <div class="flex items-center gap-2">
                       <UButton
@@ -46,6 +46,7 @@
                           square
                           variant="soft"
                           :to="`/shop/products/update/${data?.sku}`"
+                          class="glass"
                       />
                       <UButton
                           icon="i-heroicons-trash"
@@ -54,10 +55,11 @@
                           square
                           variant="soft"
                           @click="$emit('delete', data?.id)"
+                          class="glass"
                       />
                     </div>
                 </div>
             </div>
-        </div>
+        </GlassCard>
     </div>
 </template>

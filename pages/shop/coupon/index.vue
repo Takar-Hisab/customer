@@ -116,10 +116,10 @@ const { data: todos, pending } = await useLazyAsyncData<{
     <!--  Back Button End  -->
 
     <!-- Coupon Table -->
-    <div>
-        <div class="p-4 bg-white rounded-xl shadow-lg">
-        <UCard
-        class="w-full"
+    <div class="lg:pl-5">
+    <GlassSection class="rounded-xl">
+      <UCard
+          class="w-full bg-transparent"
         :ui="{
         base: '',
         ring: '',
@@ -248,7 +248,7 @@ const { data: todos, pending } = await useLazyAsyncData<{
             </div>
             </template>
         </UCard>
-        </div>
+    </GlassSection>
     </div>
     <!-- Cooupon Table End -->
 </template>

@@ -1,0 +1,38 @@
+@import url('fonts/noto-sans.css');
+@import url('effect.css');
+@import url('glass.css');
+*{
+    margin: 0;
+    padding:  0;
+    box-sizing: border-box;
+    font-family: "Noto Sans", sans-serif;
+}
+body {
+
+}
+.app,.pos {
+    background-image: url("https://img.freepik.com/free-vector/black-background-with-pink-red-lines-that-are-moving-across-screen_483537-4213.jpg?t=st=1716612903~exp=1716616503~hmac=8619a7de0291e20f3fcf0ddcf00e0410ff24ebd1e8d2d1278be7eee3694f4c8c&w=2000");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+h1,h2,h3,h4,h5,p,span,td {
+    color: #fff;
+}
+table,tr,th,td {
+    color: #fff !important;
+}
+
+
+/* ::-webkit-scrollbar {
+    @apply w-1;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-primary;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-pink-600 rounded-lg;
+} */

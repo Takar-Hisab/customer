@@ -105,8 +105,8 @@ const { data: todos, pending } = await useLazyAsyncData<{
     <!--  Back Button End  -->
 
     <!-- Coupon Table -->
-    <div>
-        <div class="p-4 bg-white rounded-xl shadow-lg">
+    <div class="lg:pl-5">
+        <GlassSection class="rounded-xl">
         <UCard
         class="w-full"
         :ui="{
@@ -235,7 +235,7 @@ const { data: todos, pending } = await useLazyAsyncData<{
             </div>
             </template>
         </UCard>
-        </div>
+        </GlassSection>
     </div>
-    <!-- Cooupon Table End -->
+    <!-- Coupon Table End -->
 </template>

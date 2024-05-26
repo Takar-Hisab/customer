@@ -126,10 +126,10 @@ const { data: transaction, pending, refresh } = await useLazyAsyncData
   <!--  Back Button End  -->
   <div>
     <!-- Invoice List -->
-    <div>
-        <div class="p-4 bg-white rounded-xl shadow-lg">
+    <div class="pl-5">
+        <GlassSection class="rounded-xl">
         <UCard
-        class="w-full"
+        class="w-full bg-transparent"
         :ui="{
         base: '',
         ring: '',
@@ -260,7 +260,7 @@ const { data: transaction, pending, refresh } = await useLazyAsyncData
             </div>
             </template>
         </UCard>
-        </div>
+        </GlassSection>
     </div>
     <!-- Invoice List End -->
   </div>

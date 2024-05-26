@@ -143,10 +143,10 @@ const { data: customers, pending, refresh } = await useLazyAsyncData<{
   <!--  Back Button End  -->
 
   <!-- Customer Table -->
-  <div>
-    <div class="p-4 bg-white rounded-xl shadow-lg">
+  <div class="pl-5">
+    <GlassSection class="rounded-xl">
       <UCard
-    class="w-full"
+    class="w-full bg-transparent"
     :ui="{
       base: '',
       ring: '',
@@ -238,7 +238,7 @@ const { data: customers, pending, refresh } = await useLazyAsyncData<{
 
       <template #action-data="{ row }">
         <UDropdown :items="actionLinks" :ui="{'ring' : 'ring-primary'}" :popper="{ placement: 'bottom-start' }">
-          <UButton color="primary"  trailing-icon="i-heroicons-sparkles" variant="soft" />
+          <UButton color="gray"  trailing-icon="i-heroicons-sparkles" variant="outline" />
         </UDropdown>
       </template>
     </UTable>
@@ -275,7 +275,7 @@ const { data: customers, pending, refresh } = await useLazyAsyncData<{
       </div>
     </template>
   </UCard>
-    </div>
+    </GlassSection>
   </div>
 </template>
 <script setup lang="ts">

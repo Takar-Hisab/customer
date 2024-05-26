@@ -1,10 +1,9 @@
 /*Side Bar Links*/
-.router-link-active { 
+.router-link-active {
     transition: all 0.4s;
     .sideBarLink__icon {
         @apply bg-primary;
-        svg,i { color: #fff; fill: #fff;
-        }
+        svg,i {@apply text-white fill-white;}
     }
     .sub-link {
         @apply text-primary;
@@ -14,11 +13,14 @@
     }
 }
 
-.category,.brand {
-    input:checked + label {
-        @apply bg-primary;
-        color: #fff;
+.pos-nav {
+    .router-link-active {
+        svg {@apply text-primary fill-primary;}
+        span {@apply text-primary;}
     }
+}
+.category,.brand {
+    input:checked + label { @apply bg-primary text-white; }
 }
 
 .shop-links {

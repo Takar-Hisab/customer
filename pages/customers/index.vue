@@ -39,12 +39,7 @@ const columns = [{
   key: 'phone',
   label: 'Phone',
   sortable: true
-},
-  {
-    key: 'join_date',
-    label: 'Join Date',
-    sortable: true
-  },
+}
 , {
   key: 'action',
   label: 'Action',
@@ -105,7 +100,7 @@ const pageCount = ref(10)
 const pageTotal = ref(200) // This value should be dynamic coming from the API
 const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1)
 const pageTo = computed(() => Math.min(page.value * pageCount.value, pageTotal.value))
-
+const toast = useToast()
 // Data
 const { data: customers, pending, refresh } = await useLazyAsyncData<{
   id: number
@@ -128,10 +123,58 @@ const { data: customers, pending, refresh } = await useLazyAsyncData<{
   default: () => [],
   watch: [page, search, searchStatus, pageCount, sort]
 })
-  onMounted(() => {
-    refresh()
-    console.log(customers.value.data);
-  })
+
+
+const isOpen = ref(false)
+const state = reactive({
+  name: undefined,
+  email:undefined,
+  phone:undefined,
+  password:undefined,
+  address:undefined,
+})
+
+
+
+
+
+  const form = ref()
+  const clearForm = () => form.value.reset();
+  const clearNotification = () => errorCreateCustomer.value = null;
+
+  const onSubmit = async () => {
+    clearNotification()
+    await execute();
+
+    if (data.value) {
+      toast.add({title: "Data Save Successfully Done..."})
+      refresh()
+      isOpen.value = false
+    }
+    if (errorCreateCustomer.value) {
+      toast.add({title: errorCreateCustomer.value.data.message, color: "red"})
+    }
+  };
+
+  const {data, status, execute, error:errorCreateCustomer, pending:createCustomerPending} = useAsyncData(
+      async () => {
+        return await $fetch(`/customers`, {
+          baseURL: useRuntimeConfig().public?.baseUrl,
+          headers:{
+            Authorization: `Bearer ${useTokenStore().customer_token}`
+          },
+          method: "POST",
+          body: state,
+        });
+      },
+      {
+        immediate: false,
+      }
+  );
+
+onMounted(() => {
+  refresh()
+})
 </script>
 <template>
   <!-- BreadCrumb -->
@@ -165,6 +208,12 @@ const { data: customers, pending, refresh } = await useLazyAsyncData<{
     <!-- Filters -->
     <div class="flex items-center justify-between gap-3 px-4 py-3">
       <UInput v-model="search" size="md" color="primary" icon="i-heroicons-magnifying-glass-20-solid" placeholder="Search..." />
+
+      <UButton
+          icon="i-heroicons-plus-16-solid"
+          label="Add Customer"
+          @click="isOpen = true"
+      />
     </div>
 
     <!-- Header and Action buttons -->
@@ -202,7 +251,6 @@ const { data: customers, pending, refresh } = await useLazyAsyncData<{
         </UButton>
       </div>
     </div>
-
     <!-- Table -->
     <UTable
       v-model="selectedRows"
@@ -220,19 +268,25 @@ const { data: customers, pending, refresh } = await useLazyAsyncData<{
     >
       <template #name-data="{ row }">
         <div class="flex items-center gap-2">
-          <div class="h-10 w-10 bg-primary rounded-full flex items-center justify-center">
-            <p class="text-white text-xl">{{row?.user?.name?.substring(0, 1)}}</p>
-          </div>
-          <h4>{{row?.user?.name}}</h4>
+          <UAvatar
+              chip-color="primary"
+              chip-text=""
+              chip-position="top-right"
+              size="sm"
+              class="ring-2 ring-primary-400 ring-offset-2"
+              :src="row?.avatar"
+              alt="Avatar"
+          />
+          <h4>{{ row?.name }}</h4>
         </div>
       </template>
 
       <template #email-data="{ row }">
-        <p>{{row?.user?.email}}</p>
+        <p>{{ row?.email }}</p>
       </template>
 
       <template #phone-data="{ row }">
-        <p>{{row?.user?.phone}}</p>
+        <p>{{ row?.phone }}</p>
       </template>
 
 
@@ -247,36 +301,77 @@ const { data: customers, pending, refresh } = await useLazyAsyncData<{
     <template #footer>
       <div class="flex flex-wrap justify-between items-center">
         <div>
+
           <span class="text-sm leading-5">
             Showing
-            <span class="font-medium">{{ pageFrom }}</span>
+            <span class="font-medium">{{ customers?.meta?.from }}</span>
             to
-            <span class="font-medium">{{ pageTo }}</span>
+            <span class="font-medium">{{ customers?.meta?.to }}</span>
             of
-            <span class="font-medium">{{ pageTotal }}</span>
+            <span class="font-medium">{{ customers?.meta?.total }}</span>
             results
           </span>
         </div>
-
-        <UPagination
-          v-model="page"
-          :page-count="pageCount"
-          :total="pageTotal"
-          :ui="{
-            wrapper: 'flex items-center gap-1',
-            rounded: '!rounded-full min-w-[32px] justify-center',
-            default: {
-              activeButton: {
-                variant: 'outline'
-              }
-            }
-          }"
-        />
+        <UPagination v-model="page" :page-count="customers?.meta?.per_page" :total="customers?.meta?.total" />
       </div>
     </template>
   </UCard>
     </div>
   </div>
+
+
+  <UModal v-model="isOpen" prevent-close :ui="{width: 'sm:max-w-4xl'}">
+    <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+      <template #header>
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
+            Customer Details
+          </h3>
+          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="isOpen = false" />
+        </div>
+      </template>
+      <div class="overflow-y-auto pos-products bg-slate-100 p-5 rounded-md">
+        <div class="mt-4">
+          <div class="flex w-full items-center gap-4 mt-8">
+            <UFormGroup class="w-full" name="name" label="Name *">
+              <UInput class="border-none" v-model="state.name" size="md"/>
+              <span v-if="errorCreateCustomer?.data?.errors?.name" class="text-red-500 font-semibold" v-text="errorCreateCustomer?.data?.errors?.name[0]"/>
+            </UFormGroup>
+
+            <UFormGroup class="w-full" name="price" label="Email *">
+              <UInput type="email" inputClass="border-none" v-model="state.email" size="md"/>
+              <span v-if="errorCreateCustomer?.data?.errors?.email" class="text-red-500 font-semibold" v-text="errorCreateCustomer?.data?.errors?.email[0]"/>
+            </UFormGroup>
+          </div>
+          <div class="flex w-full items-center gap-4 mt-5">
+            <UFormGroup class="w-full" name="name" label="Phone *">
+              <UInput class="border-none" v-model="state.phone" size="md"/>
+              <span v-if="errorCreateCustomer?.data?.errors?.phone" class="text-red-500 font-semibold" v-text="errorCreateCustomer?.data?.errors?.phone[0]"/>
+            </UFormGroup>
+
+            <UFormGroup class="w-full" name="name" label="Password *">
+              <UInput class="border-none" v-model="state.password" size="md" />
+              <span v-if="errorCreateCustomer?.data?.errors?.password" class="text-red-500 font-semibold" v-text="errorCreateCustomer?.data?.errors?.password[0]"/>
+            </UFormGroup>
+          </div>
+          <div class="mt-5">
+            <UFormGroup class="w-full" name="name" label="Address *">
+              <UTextarea class="border-none" v-model="state.address" size="md" />
+              <span v-if="errorCreateCustomer?.data?.errors?.address" class="text-red-500 font-semibold" v-text="errorCreateCustomer?.data?.errors?.address[0]"/>
+            </UFormGroup>
+          </div>
+          <div class="w-full flex items-end justify-end mt-10">
+            <UButton variant="soft" color="red" size="md" class="w-[15%] me-2 shadow-md" block @click="isOpen = false">
+              Close
+            </UButton>
+            <UButton :loading="status === 'pending'" @click="onSubmit" type="submit" class="w-[15%] shadow-md" block size="md">
+              Submit
+            </UButton>
+          </div>
+        </div>
+      </div>
+    </UCard>
+  </UModal>
 </template>
 <script setup lang="ts">
 </script>

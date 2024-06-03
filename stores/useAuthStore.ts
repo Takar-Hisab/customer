@@ -2,8 +2,6 @@ import {defineStore} from 'pinia'
 import {useApiFetch} from "~/composables/useApiFetch";
 import {useTokenStore} from "~/stores/useTokenStore";
 export default defineStore('auth', ()=>{
-    const toast = useToast()
-
     async function fetchUser(){
         return useApiFetch("/user", {
             method: "GET"
@@ -33,13 +31,12 @@ export default defineStore('auth', ()=>{
         const {data, error} = await useApiFetch("/logout",{method:"POST"})
         if(data.value) {
             useTokenStore().removeToken()
-            // @ts-ignore
-            
-            navigateTo('/login')
         }
         if(error.value) {
             console.log(error?.value?.data?.message)
         }
+        useTokenStore().removeToken()
+        navigateTo('/login')
     }
 
     return { login,signup, logout, fetchUser}

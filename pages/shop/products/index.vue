@@ -13,21 +13,25 @@
   })
 
   // Create Product
-  const state = reactive({
+  const state = reactive<any>({
     sku:null,
     price:null,
   });
+
 
   const onSubmit = async () => {
     await execute();
 
     if(data.value){
-      refresh()
+      await refresh()
       toast.add({ title: "Data Save Successfully Done..." });
-      isProductCreate.value = false;
+      isProductCreate.value = false as boolean;
     }
     if(error.value){
-      toast.add({ title:error.value.data.message, color:"red" })
+      toast.add({
+        title:error?.value?.data?.message as string,
+        color:"red"
+      })
     }
   };
   const {data, status, execute} = useAsyncData(
@@ -47,23 +51,45 @@
   );
 
   //Get Products
-    const { data: products, error, pending, refresh } = useLazyAsyncData(
-      'products',
-      () => $fetch( `/product`, {
-        method: 'GET',
-        baseURL: useRuntimeConfig().public.baseUrl,
-        headers:{
-          authorization: `Bearer ${useTokenStore().customer_token}`
-        }
-      }));
 
-      onMounted(() => {
-        console.log(products.value)
-        refresh()
-      })
+  const page = ref(0)
+  const pageCount = ref(10)
+  // const { data: products, error, pending, refresh } = useLazyAsyncData(
+  //   'products',
+  //   () => $fetch( `/product`, {
+  //     method: 'GET',
+  //     baseURL: useRuntimeConfig().public.baseUrl,
+  //     headers:{
+  //       authorization: `Bearer ${useTokenStore().customer_token}`
+  //     }
+  //   }),{
+  //     watch: [page]
+  //     });
+
+
+  const { data: products, pending, error, refresh } = await useLazyAsyncData('products', () => $fetch('/product', {
+    baseURL: useRuntimeConfig().public.baseUrl,
+    headers: {
+      accept: "application/json",
+      authorization: `Bearer ${useTokenStore().customer_token}`
+    },
+    query: {
+      'page': page.value,
+    }
+  }),{
+    default: () => [],
+    watch: [page, pageCount]
+  })
+
+
+
+onMounted(() => {
+  console.log(products.value)
+  refresh()
+})
 
 //Delete Products
-const deleteProduct = async (id) => {
+const deleteProduct = async (id: any) => {
   await $fetch(`/product/${id}`, {
           baseURL: useRuntimeConfig().public?.baseUrl,
           method: "DELETE",
@@ -71,7 +97,7 @@ const deleteProduct = async (id) => {
             authorization: `Bearer ${useTokenStore().customer_token}`
           }
         });
-        refresh()
+        await refresh()
   }
 </script>
 <template>
@@ -123,8 +149,22 @@ const deleteProduct = async (id) => {
         <div class="grid grid-cols-2 gap-3 transition-all ease-in-out duration-700" v-else-if="products != null" :class="{ 'lg:grid-cols-2': isFilter,  'lg:grid-cols-4': !isFilter, }">
           <ProductCard v-for="(product, index) in products?.data" :data="product"  :key="index" @delete="deleteProduct" />
         </div>
-        <div v-else>
-          <p class="text-4xl font-bold text-center py-20 text-primary">Products Not Found !</p>
+
+        <div v-if="!pending" class="flex justify-between items-center p-5 mt-10 w-full bg-primary-100 dark:bg-slate-700 rounded-b-2xl">
+          <div>
+          <span class="text-sm leading-5">
+            Showing
+            <span class="font-medium">{{ products?.meta?.from }}</span>
+            to
+            <span class="font-medium">{{ products?.meta?.to }}</span>
+            of
+            <span class="font-medium">{{ products?.meta?.total }}</span>
+            results
+          </span>
+          </div>
+          <div class="flex items-center gap-5">
+            <UPagination v-model="page" :page-count="products?.meta?.per_page" :total="parseInt(products?.meta?.total)" />
+          </div>
         </div>
       </div>
     </div>

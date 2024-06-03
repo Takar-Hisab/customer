@@ -26,7 +26,13 @@ const items = [
     to:'/customers'
   }], [{
     label: 'Sign out',
-    icon: 'i-heroicons-arrow-left-on-rectangle'
+    icon: 'i-heroicons-arrow-left-on-rectangle',
+    click:()=>{
+      useAuthStore().logout();
+      useToast().add({
+        title: "Logout Successfully Done.."
+      })
+    }
   }]
 ]
 

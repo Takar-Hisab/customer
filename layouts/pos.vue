@@ -48,6 +48,8 @@ const links = [
             variant="outline"
             label="Close Terminal"
             trailing
+            to="/dashboard"
+
         />
       </div>
       <slot />

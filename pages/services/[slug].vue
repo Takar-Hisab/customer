@@ -68,27 +68,36 @@ definePageMeta({
         }
       }));
 
+      interface editType {
+        id: Number,
+        service_id: string|undefined,
+        name:string|undefined,
+        price:Number|undefined,
+        position:Number|undefined,
+        description:String|undefined
+      }
+
       //edit package
       const isEdit = ref(false);
-      const editState = reactive({
-        id:undefined,
-        service_id:route.params.slug,
+      const editState = reactive<editType>({
+        id:0,
+        service_id:route.params.slug as string,
         name:undefined,
         price:undefined,
         position:undefined,
         description:undefined,
       });
 
-      const editPackage = (data: object) => {
+      const editPackage = (data: editType) => {
         isEdit.value = true;
         editState.id = data?.id;
         editState.name = data?.name;
         editState.price = data?.price;
         editState.position = data?.position;
-        editState.description = data?.description;
+        editState.description = data?.description as String;
       }
 
-      const onUpdate = async (id) => {
+      const onUpdate = async (id: any) => {
           await $fetch(`/service-package/${id}`, {
               baseURL: useRuntimeConfig().public?.baseUrl,
               method: "PATCH",
@@ -102,7 +111,7 @@ definePageMeta({
         }
 
       //delete Package
-    const deletePackage = async (id) => {
+    const deletePackage = async (id: any) => {
       await $fetch(`/service-package/${id}`, {
               baseURL: useRuntimeConfig().public?.baseUrl,
               method: "DELETE",

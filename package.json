@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev --port=3000",
+    "dev": "nuxt dev --port=3003",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -23,6 +23,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@pinia-plugin-persistedstate/nuxt": "^1.2.0"
+    "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
+    "dayjs-nuxt": "^2.1.9"
   }
 }

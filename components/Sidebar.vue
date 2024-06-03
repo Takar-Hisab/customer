@@ -79,7 +79,7 @@
                   <span class="sub-link hover:text-primary">Product Brand</span>
                 </NuxtLink>
               </li>
-              <li>
+<!--              <li>
                 <NuxtLink to="/shop/coupon" class="flex items-center gap-3">
                   <Icon name="mingcute:coupon-line" size="20" class="text-primary" />
                   <span class="sub-link hover:text-primary">Product Coupon</span>
@@ -90,7 +90,7 @@
                   <Icon name="streamline:shipping-truck" size="20" class="text-primary" />
                   <span class="sub-link hover:text-primary">Shipping</span>
                 </NuxtLink>
-              </li>
+              </li>-->
             </ul>
           </div>
         </li>
@@ -119,18 +119,18 @@
         <!-- Customers End -->
 
         <!-- invoice -->
-        <li>
+<!--        <li>
           <NuxtLink to="/invoice" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
             <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg shadow-primary-400/20 flex items-center justify-center">
               <Icon name="teenyicons:invoice-outline" size="21" class=" transition-all ease-in-out duration-300 text-primary" />
             </span>
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Invoice</span>
           </NuxtLink>
-        </li>
+        </li>-->
         <!-- Invoice End -->
 
         <!-- plans -->
-        <li>
+<!--        <li>
           <NuxtLink to="/plans" class="sideBarLink group flex items-center gap-3  py-[6px] px-4 rounded-lg transition-all ease-in-out duration-300">
             <span class="sideBarLink__icon w-12 h-12 rounded-full bg-white shadow-lg shadow-primary-400/20 flex items-center justify-center">
               <Icon name="material-symbols-light:rocket-outline" size="28" class=" transition-all ease-in-out duration-300 text-primary" />
@@ -138,7 +138,7 @@
             <span class="sideBarLink__text group-hover:text-primary text-lg font-normal transition-all ease-in-out duration-300">Plans</span>
           </NuxtLink>
         </li>
-        <!-- plans End -->
+        &lt;!&ndash; plans End &ndash;&gt;-->
 
         <!-- Transactions -->
         <li>

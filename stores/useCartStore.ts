@@ -7,6 +7,7 @@ interface CartItem {
         id: string;
         selectQty: number;
     };
+    buyQty: number,
     price: number;
 }
 
@@ -24,7 +25,7 @@ export const useCartStore = defineStore({
         addToCart(data: CartItem) {
             const index = this.cart.findIndex(item => item?.sku === data?.sku);
             if (index > -1) {
-                this.cart[index].quantity++;
+                this.cart[index].buyQty++;
             } else {
                 this.cart.push(data);
             }
@@ -37,19 +38,15 @@ export const useCartStore = defineStore({
             }
         },
 
-        decrementQty(id: string) {
-            const index = this.cart.findIndex(item => item?.selectSku.id === id);
-            if (index > -1 && this.cart[index].selectSku.selectQty > 1) {
-                this.cart[index].selectSku.selectQty--;
+        decrementQty(data: CartItem) {
+            const index = this.cart.findIndex(item => item?.sku === data?.sku);
+            if (index > -1 && this.cart[index].buyQty > 1) {
+                this.cart[index].buyQty--;
             }
         },
 
         clearCart(isToast: boolean = true) {
             this.cart = [];
-            console.log(isToast);
-            if (isToast) {
-
-            }
         }
     },
 
@@ -61,7 +58,7 @@ export const useCartStore = defineStore({
             return this.cart;
         },
         getCartTotalPrice(): number {
-            return this.cart.reduce((total, item) => total + item.price * item.quantity, 0);
+            return this.cart.reduce((total, item) => total + item.price * item.buyQty, 0);
         }
     },
     persist: true

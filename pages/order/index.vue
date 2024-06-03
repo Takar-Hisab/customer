@@ -11,36 +11,35 @@ const columns = [{
   label: 'ORDER ID',
   sortable: true
 }, {
-  key: 'order_date',
-  label: 'DATE',
-  sortable: true
-}, {
-  key: 'name',
-  label: 'NAME',
+  key: 'customer',
+  label: 'Customer',
   sortable: true
 },
 
   {
-    key: 'amount',
-    label: 'AMOUNT',
+    key: 'grand_total',
+    label: 'Total AMOUNT',
     sortable: true
   },
   {
-    key: 'payment',
-    label: 'PAYMENT',
+    key: 'payment_status',
+    label: 'Payment Status',
     sortable: true
   },
   , {
-    key: 'order',
-    label: 'ORDER',
+    key: 'order_status',
+    label: 'Order Status',
     sortable: true
-  },
-  , {
+  },{
+    key: 'order_date',
+    label: 'DATE',
+    sortable: true
+  },{
     key: 'action',
     label: 'Action',
     sortable: true
   }
-  ]
+]
 
 const selectedColumns = ref(columns)
 const columnsTable = computed(() => columns.filter((column) => selectedColumns.value.includes(column)))
@@ -91,7 +90,7 @@ const resetFilters = () => {
 
 // Pagination
 const sort = ref({ column: 'id', direction: 'asc' as const })
-const page = ref(1)
+const page = ref(0)
 const pageCount = ref(10)
 const pageTotal = ref(200) // This value should be dynamic coming from the API
 const pageFrom = computed(() => (page.value - 1) * pageCount.value + 1)
@@ -106,8 +105,8 @@ const { data: orders, pending, refresh } = await useLazyAsyncData
   },
   query: {
     q: search.value,
-    '_page': page.value,
-    '_limit': pageCount.value,
+    'page': page.value,
+    'perPage': pageCount.value,
     '_sort': sort.value.column,
     '_order': sort.value.direction
   }
@@ -136,13 +135,13 @@ onMounted(() => {
       <UCard
           class="w-full"
           :ui="{
-      base: '',
-      ring: '',
-      divide: 'divide-y divide-gray-200 dark:divide-gray-700',
-      header: { padding: 'px-4 py-5' },
-      body: { padding: '', base: 'divide-y divide-gray-200 dark:divide-gray-700' },
-      footer: { padding: 'p-4' }
-    }"
+            base: '',
+            ring: '',
+            divide: 'divide-y divide-gray-200 dark:divide-gray-700',
+            header: { padding: 'px-4 py-5' },
+            body: { padding: '', base: 'divide-y divide-gray-200 dark:divide-gray-700' },
+            footer: { padding: 'p-4' }
+          }"
       >
         <template #header>
           <Heading>Orders</Heading>
@@ -190,8 +189,8 @@ onMounted(() => {
         </div>
 
         <!-- Table -->
+<!--        v-model="selectedRows"-->
         <UTable
-            v-model="selectedRows"
             v-model:sort="sort"
             :rows="orders?.data"
             :columns="columnsTable"
@@ -206,42 +205,34 @@ onMounted(() => {
         >
           <template #order_id-data="{ row }" >
             <UTooltip text="Detail" :popper="{ placement: 'top'}" :ui="{ background : 'bg-primary', color: 'text-white'}">
-              <NuxtLink to="/">
+              <NuxtLink :to="`/order/${row?.id}`">
                 <UBadge variant="outline" size="lg" :label="`${row?.order_id?.substring(0, 12)}..`" />
               </NuxtLink>
             </UTooltip>
           </template>
-          <template #name-data="{ row }">
-            <span>{{ row?.customer?.name }}</span>
+          <template #customer-data="{ row }">
+            <div v-if="row.customer" class="flex gap-3">
+              <UAvatar
+                  :src="row?.customer?.avatar"
+                  chip-color="primary"
+                  size="lg"
+              />
+              <div class="flex flex-col gap-1 justify-end">
+                <span class="capitalize font-semibold">{{ row?.customer?.name }}</span>
+                <span>{{ row?.customer?.phone }}</span>
+              </div>
+            </div>
+            <div v-else>
+              <p>Walking Customer</p>
+            </div>
           </template>
 
-          <template #order-data="{row}" >
-            <UPopover mode="hover" :popper="{ placement: 'top' }">
-              <UButton variant="soft":ui="{rounded:'rounded-full'}"  square>
-                <Icon name="material-symbols:fitbit-check-small-sharp" size="20" />
-              </UButton>
-              <template #panel>
-                <div class="bg-primary p-2">
-                  <p class="text-white">Type: {{row?.order_type}}</p>
-                  <p class="text-white">Status: {{row?.order_status}}</p>
-                </div>
-              </template>
-            </UPopover>
+          <template #payment_status-data="{row}" >
+            <UBadge class="capitalize">{{ row?.payment_status }}</UBadge>
           </template>
 
-          <template #amount-data="{row}" >
-            <UPopover mode="hover" :popper="{ placement: 'top' }">
-              <UButton variant="soft":ui="{rounded:'rounded-full'}"  square>
-                <Icon name="material-symbols:fitbit-check-small-sharp" size="20" />
-              </UButton>
-              <template #panel>
-                <div class="bg-primary p-2">
-                  <p class="text-white">Pay Bill: {{row?.pay_bill}}</p>
-                  <p class="text-white">Pay Due: {{row?.pay_due}}</p>
-                  <p class="text-white">Grand Total: {{row?.grand_total}}</p>
-                </div>
-              </template>
-            </UPopover>
+          <template #order_status-data="{row}" >
+            <UBadge class="capitalize">{{ row?.order_status }}</UBadge>
           </template>
 
           <template #payment-data="{row}" >
@@ -251,8 +242,8 @@ onMounted(() => {
               </UButton>
               <template #panel>
                 <div class="bg-primary p-2">
-                  <p class="text-white">Method: {{row?.payment_method}}</p>
-                  <p class="text-white">Status: {{row?.payment_status}}</p>
+                  <p class="text-white">Method: {{ row?.payment_method }}</p>
+                  <p class="text-white">Status: {{ row?.payment_status }}</p>
                 </div>
               </template>
             </UPopover>
@@ -265,7 +256,6 @@ onMounted(() => {
 
 
           <template #action-data="{ row }">
-            
               <div class="text-center">
                 <UTooltip text="Detail" :popper="{ placement: 'top'}" :ui="{ background : 'bg-primary', color: 'text-white'}">
                 <UButton
@@ -288,32 +278,20 @@ onMounted(() => {
         <template #footer>
           <div class="flex flex-wrap justify-between items-center">
             <div>
-          <span class="text-sm leading-5">
-            Showing
-            <span class="font-medium">{{ pageFrom }}</span>
-            to
-            <span class="font-medium">{{ pageTo }}</span>
-            of
-            <span class="font-medium">{{ pageTotal }}</span>
-            results
-          </span>
+              <span class="text-sm leading-5">
+                Showing
+                <span class="font-medium">{{ orders?.meta?.from }}</span>
+                to
+                <span class="font-medium">{{ orders?.meta?.to }}</span>
+                of
+                <span class="font-medium">{{ orders?.meta?.total }}</span>
+                results
+              </span>
             </div>
-
-            <UPagination
-                v-model="page"
-                :page-count="pageCount"
-                :total="pageTotal"
-                :ui="{
-            wrapper: 'flex items-center gap-1',
-            rounded: '!rounded-full min-w-[32px] justify-center',
-            default: {
-              activeButton: {
-                variant: 'outline'
-              }
-            }
-          }"
-            />
+            <UPagination v-model="page" :page-count="orders?.meta?.per_page" :total="orders?.meta?.total" />
           </div>
+
+
         </template>
       </UCard>
     </div>

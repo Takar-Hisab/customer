@@ -52,7 +52,7 @@
 
   //Get Products
 
-  const page = ref(0)
+  const page = ref(1)
   const pageCount = ref(10)
   // const { data: products, error, pending, refresh } = useLazyAsyncData(
   //   'products',
